@@ -6,12 +6,32 @@ class Bands(db.Model):
 
     name = db.Column(db.String, primary_key=True)
     formation_date = db.Column(db.Date, nullable=True)
+    members = db.relationship('Musicians', backref='band')
+    concerts = db.relationship('Concerts', backref='performer')
+
+    @staticmethod
+    def create(name, formation_date=None):
+        band = Bands(name=name, formation_date=formation_date)
+        db.session.add(band)
+        db.session.commit()
+        return band
+
+    def play_concert(self, place, date):
+        return Concerts.create(self.name, place, date)
 
 
 class Instruments(db.Model):
     __tablename__ = 'instruments'
 
     type = db.Column(db.String, primary_key=True)
+    players = db.relationship('Musicians', backref='instrument')
+
+    @staticmethod
+    def create(type):
+        instrument = Instruments(type=type)
+        db.session.add(instrument)
+        db.session.commit()
+        return instrument
 
 
 class Musicians(db.Model):
@@ -20,59 +40,96 @@ class Musicians(db.Model):
     name = db.Column(db.String, primary_key=True)
 
     band_name = db.Column(db.String, db.ForeignKey('bands.name'), nullable=False)
-    band = db.relationship('Bands', backref='members')
-
     instrument_type = db.Column(db.String, db.ForeignKey('instruments.type'), nullable=False)
-    instrument = db.relationship('Instruments', backref='players')
 
     nationality = db.Column(db.String, nullable=True)
+
+    @staticmethod
+    def create(name, band, instrument, nationality=None):
+        musician = Musicians(
+            name=name,
+            band=band,
+            instrument=instrument,
+            nationality=nationality,
+        )
+        db.session.add(musician)
+        db.session.commit()
+        return musician
 
 
 class Places(db.Model):
     __tablename__ = 'places'
 
     name = db.Column(db.String, nullable=False)
-    city = db.Column(db.String, nullable=True)
+    city = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=True)
+    concerts = db.relationship('Concerts', backref='place')
+    festivals = db.relationship('Concerts', backref='where')
 
     db.PrimaryKeyConstraint(name, city)
 
+    @staticmethod
+    def create(name, city, address):
+        place = Places(name=name, city=city, address=address)
+        db.session.add(place)
+        db.session.commit()
+        return place
 
 class Concerts(db.Model):
     __tablename__ = 'concerts'
 
     band_name = db.Column(db.String, db.ForeignKey('bands.name'), nullable=False)
-    band = db.relationship("Bands", backref='concerts')
 
-    place_name = db.Column(db.String, db.ForeignKey('places.name'), nullable=False)
-    place_city = db.Column(db.String, db.ForeignKey('places.city'), nullable=False)
-    place = db.relationship("Places", backref='concerts')
+    place_name = db.Column(db.String, nullable=False)
+    place_city = db.Column(db.String, nullable=False)
 
     concert_date = db.Column(db.Date, nullable=False)
     tour = db.Column(db.String, nullable=True)
 
+    db.ForeignKeyConstraint(['place_name', 'place_city'], ['places.name', 'places.city'])
     db.PrimaryKeyConstraint(band_name, place_name, place_city, concert_date)
+
+    @staticmethod
+    def create(performer, place, concert_date):
+        concert = Concerts(performer=performer, place=place, concert_date=concert_date)
+        db.session.add(concert)
+        db.session.commit()
+        return concert
 
 
 class Festivals(db.Model):
     __tablename__ = 'festivals'
 
     name = db.Column(db.String, nullable=False)
-    date_start = db.Column(db.Date, nullable=True)
-    place_name = db.Column(db.String, db.ForeignKeyConstraint('places.name'), null=False)
-    place_city = db.Column(db.String, db.ForeignKeyConstraint('places.city'), null=False)
-    localization = db.relationship('Places', backref='festivals')
+    date_start = db.Column(db.Date, nullable=False)
+    place_name = db.Column(db.String, db.ForeignKey('places.name'), nullable=False)
+    place_city = db.Column(db.String, db.ForeignKey('places.city'), nullable=False)
 
+    db.ForeignKeyConstraint(['place_name', 'place_city'], ['places.name', 'places.city'])
     db.PrimaryKeyConstraint(name, date_start)
+
+    @staticmethod
+    def create(name, date_start, where):
+        festival = Festivals(name=name, date_start=date_start, where=where)
+        db.session.add(festival)
+        db.session.commit()
+        return festival
+
+
+
+#### TODO everything below
+
+
+
 
 
 class Appearances(db.Model):
     __tablename__ = 'appearances'
 
     # TODO MANY TO MANY?
-    festival_name = db.Column(db.String, db.ForeignKeyConstraint('festivals.name'))
+    festival_name = db.Column(db.String, db.ForeignKey('festivals.name'))
     festival_date = db.Column(db.Date, db.ForeignKey('festivals.date_start'))
-    band_name = db.Column(db.Integer, db.ForeignKey('bands.id_band'))
+    band_name = db.Column(db.Integer, db.ForeignKey('bands.name'))
     db.PrimaryKeyConstraint(festival_name, festival_date, band_name)
 
 
