@@ -13,12 +13,10 @@ def make_shell_context():
         'Places': Places,
         'Concerts': Concerts,
         'Festivals': Festivals,
-        'Appearances': Appearances,
         'Genres': Genres,
         'Albums': Albums,
         'Songs': Songs,
         'Awards': Awards,
-        'AwardReceptions': AwardReceptions,
     }
 
     return ctx

@@ -1,5 +1,23 @@
 from concertina.configs import db
 
+appearances_table = db.Table(
+    'appearances',
+    db.Column('band_name', db.String, db.ForeignKey('bands.name')),
+    db.Column('festival_name', db.String),
+    db.Column('festival_date', db.Date),
+    db.ForeignKeyConstraint(['festival_name', 'festival_date'],
+                            ['festivals.name', 'festivals.date_start'])
+)
+
+receptions_table = db.Table(
+    'award_receptions',
+    db.Column('album_name', db.String),
+    db.Column('album_band_name', db.String),
+    db.Column('award_name', db.String, db.ForeignKey('awards.name')),
+    db.ForeignKeyConstraint(['album_name', 'album_band_name'],
+                            ['albums.name', 'albums.band_name'])
+)
+
 
 class Bands(db.Model):
     __tablename__ = 'bands'
@@ -8,7 +26,8 @@ class Bands(db.Model):
     formation_date = db.Column(db.Date, nullable=True)
     members = db.relationship('Musicians', backref='band')
     concerts = db.relationship('Concerts', backref='performer')
-    # festivals = db.relationship('Festivals', secondary=appearances)
+    festivals = db.relationship('Festivals', secondary=appearances_table,
+                                backref=db.backref('bands', lazy='dynamic'))
 
     @staticmethod
     def create(name, formation_date=None):
@@ -20,15 +39,17 @@ class Bands(db.Model):
     def play_concert(self, place, date):
         return Concerts.create(self, place, date)
 
-    def play_on_festival(self, festival):
-        return True
+    def release_album(self, name, genre=None):
+        return Albums.create(name, self, genre)
+
+    def appear_on_festival(self, festival):
+        festival.bands.append(self)
 
 
 class Instruments(db.Model):
     __tablename__ = 'instruments'
 
     type = db.Column(db.String, primary_key=True)
-    players = db.relationship('Musicians', backref='instrument')
 
     @staticmethod
     def create(type):
@@ -45,6 +66,7 @@ class Musicians(db.Model):
 
     band_name = db.Column(db.String, db.ForeignKey('bands.name'), nullable=False)
     instrument_type = db.Column(db.String, db.ForeignKey('instruments.type'), nullable=False)
+    instrument = db.relationship('Instruments', backref='players')
 
     nationality = db.Column(db.String, nullable=True)
 
@@ -71,11 +93,12 @@ class Places(db.Model):
     db.PrimaryKeyConstraint(name, city)
 
     @staticmethod
-    def create(name, city, address):
+    def create(name, city, address=None):
         place = Places(name=name, city=city, address=address)
         db.session.add(place)
         db.session.commit()
         return place
+
 
 class Concerts(db.Model):
     __tablename__ = 'concerts'
@@ -121,73 +144,95 @@ class Festivals(db.Model):
         db.session.commit()
         return festival
 
-# TODO everything below
-
-# class Appearances(db.Model):
-#     __tablename__ = 'appearances'
-#
-#     festival_name = db.Column(db.String)
-#     festival_date = db.Column(db.Date)
-#     band_name = db.Column(db.Integer, db.ForeignKey('bands.name'))
-#
-#     db.ForeignKeyConstraint(['festival_name', 'festival_date'], ['festivals.name', 'festivals.date_start'])
-#
-#
-# class Genres(db.Model):
-#     __tablename__ = 'genres'
-#
-#     name = db.Column(db.String, primary_key=True)
-#     supergenre_name = db.Column(db.String, db.ForeignKey('genres.name'), nullable=True)
-#     supergenre = db.relationship('Genres', backref='subgenres')
-#
-#
-# class Albums(db.Model):
-#     __tablename__ = 'albums'
-#
-#     band_name = db.Column(db.String, db.ForeignKey('bands.name'), nullable=False)
-#     band = db.relationship('Bands', backref='albums')
-#
-#     name = db.Column(db.String, nullable=False)
-#
-#     genre_name = db.Column(db.String, db.ForeignKey('genres.name'), nullable=True)
-#     genre = db.relationship('Genres', backref='genre')
-#
-#     db.PrimaryKeyConstraint(band_name, name)
-#
-#
-# class Songs(db.Model):
-#     __tablename__ = 'songs'
-#
-#     album_name = db.Column(db.String, db.ForeignKey('albums.name'), nullable=False)
-#     album = db.relationship('Albums', backref='songs')
-#
-#     band_name = db.Column(db.String, db.ForeignKey('bands.name'), nullable=False)
-#     band = db.relationship('Bands')
-#
-#     posisiton = db.Column(db.Integer, nullable=False)
-#     name = db.Column(db.String, nullable=False)
-#
-#     db.PrimaryKeyConstraint(band_name, album_name, posisiton)
-#
-#
-# class Awards(db.Model):
-#     __tablename__ = 'awards'
-#
-#     name = db.Column(db.String, primary_key=True)
-#
-#
-# class AwardReceptions(db.Model):
-#     __tablename__ = 'award_receptions'
-#
-#
-#     # TODO MANY TO MANY?
-#     album_name = db.Column(db.String, db.ForeignKey('albums.name'), nullable=False)
-#     album = db.relationship('Albums')
-#     award_name = db.Column(db.String, db.ForeignKey('awards.name'), nullable=False)
-#     award = db.relationship('Awards')
-#
-#     db.PrimaryKeyConstraint(album_name, award_name)
+    def host_band(self, band):
+        self.bands.append(band)
 
 
+class Genres(db.Model):
+    __tablename__ = 'genres'
+
+    name = db.Column(db.String, primary_key=True)
+    supergenre_name = db.Column(db.String, db.ForeignKey('genres.name'), nullable=True)
+    supergenre = db.relationship('Genres', remote_side=name, backref=db.backref('subgenres'))
+
+    @staticmethod
+    def create(name, supergenre=None):
+        g_name = None if not supergenre else supergenre.name
+        genre = Genres(name=name, supergenre_name=g_name)
+        db.session.add(genre)
+        db.session.commit()
+        return genre
 
 
+class Albums(db.Model):
+    __tablename__ = 'albums'
+
+    band_name = db.Column(db.String, db.ForeignKey('bands.name'), nullable=False)
+    band = db.relationship('Bands', backref='albums')
+
+    name = db.Column(db.String, nullable=False)
+
+    genre_name = db.Column(db.String, db.ForeignKey('genres.name'), nullable=True)
+    genre = db.relationship('Genres', backref='genre')
+
+    awards = db.relationship('Awards', secondary=receptions_table,
+                             backref=db.backref('awarded_albums', lazy='dynamic'))
+
+    db.PrimaryKeyConstraint(band_name, name)
+
+    @staticmethod
+    def create(name, band, genre=None):
+        album = Albums(band=band, name=name, genre=genre)
+        db.session.add(album)
+        db.session.commit()
+        return album
+
+    def add_songs(self, titles):
+        if isinstance(titles, str):
+            return Songs.create(titles, self)
+
+        if isinstance(titles, list):
+            songs = []
+            for title in titles:
+                song = Songs.create(title, self)
+                songs.append(song)
+            return songs
+
+
+class Songs(db.Model):
+    __tablename__ = 'songs'
+
+    album_name = db.Column(db.String, nullable=False)
+    band_name = db.Column(db.String, nullable=False)
+    album = db.relationship('Albums', backref='songs')
+
+    position = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String, nullable=False)
+
+    db.ForeignKeyConstraint([album_name, band_name],
+                            [Albums.name, Albums.band_name])
+    db.PrimaryKeyConstraint(band_name, album_name, position)
+
+    @staticmethod
+    def create(name, album):
+        position = len(album.songs) + 1
+        song = Songs(name=name, album=album, position=position)
+        db.session.add(song)
+        db.session.commit()
+        return song
+
+
+class Awards(db.Model):
+    __tablename__ = 'awards'
+
+    name = db.Column(db.String, primary_key=True)
+
+    @staticmethod
+    def create(name):
+        award = Awards(name=name)
+        db.session.add(award)
+        db.session.commit()
+        return award
+
+    def award_album(self, album):
+        self.awarded.albums.append(album)
