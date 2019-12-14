@@ -68,8 +68,6 @@ class Musicians(db.Model):
     instrument_type = db.Column(db.String, db.ForeignKey('instruments.type'), nullable=False)
     instrument = db.relationship('Instruments', backref='players')
 
-    nationality = db.Column(db.String, nullable=True)
-
     @staticmethod
     def create(name, band, instrument, nationality=None):
         musician = Musicians(
@@ -113,6 +111,7 @@ class Concerts(db.Model):
 
     concert_date = db.Column(db.Date, nullable=False)
     tour = db.Column(db.String, nullable=True)
+
 
     db.PrimaryKeyConstraint(band_name, place_name, place_city, concert_date)
 
