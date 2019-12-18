@@ -1,5 +1,13 @@
 from datetime import date, timedelta
 
+## Dummy classes so that pycharm wont yell at me
+class Instruments: pass
+class Genres: pass
+class Places: pass
+class Bands: pass
+class Musicians: pass
+
+
 guitar = Instruments.create('Guitar')
 drums = Instruments.create('Drums')
 vocal = Instruments.create('Vocal')
@@ -65,4 +73,3 @@ casiopea.play_concert(stadium, date.today() + timedelta(days=10))
 casiopea.play_concert(arena, date.today() + timedelta(days=11))
 casiopea.play_concert(blue_note, date.today() + timedelta(days=12))
 casiopea.play_concert(u_bazyla, date.today() + timedelta(days=13))
-    casiopea.play_concert(u_bazyla, date.today() + timedelta(days=i))
