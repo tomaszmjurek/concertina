@@ -1,4 +1,6 @@
 from concertina.configs import db
+from datetime import date, timedelta
+
 
 appearances_table = db.Table(
     'appearances',
@@ -69,12 +71,11 @@ class Musicians(db.Model):
     instrument = db.relationship('Instruments', backref='players')
 
     @staticmethod
-    def create(name, band, instrument, nationality=None):
+    def create(name, band, instrument):
         musician = Musicians(
             name=name,
             band=band,
             instrument=instrument,
-            nationality=nationality,
         )
         db.session.add(musician)
         db.session.commit()
