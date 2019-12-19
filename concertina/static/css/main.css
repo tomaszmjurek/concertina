@@ -57,9 +57,16 @@ body {
     overflow: scroll;
 }
 
-
 tr>td{
     text-align: center;
     font-size: 13px;
     margin: 0 0;
+}
+
+#add_new {
+    color: darkorange;
+}
+
+.see_more{
+    background-color: darkorange;
 }
