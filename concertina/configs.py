@@ -1,5 +1,6 @@
 import os
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 USER = 'aleksykrolczyk'
 HOST = 'localhost'
@@ -18,9 +19,10 @@ def connect_db():
             user=USER,
             host=HOST,
             port=PORT,
-            database=DB_NAME
+            database=DB_NAME,
+            cursor_factory=RealDictCursor,
         )
         connection.autocommit = True
         return connection
-    except:
-        print("Could not connect to the DB")
+    except Exception as e:
+        print(str(e))
