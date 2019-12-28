@@ -86,3 +86,12 @@ tr>td{
 .add_new_form div{
     padding-bottom: 10px;
 }
+
+#flashes{
+    background-color: darkred;
+    color: whitesmoke;
+    list-style-type: none;
+    height: 30px;
+    padding-top: 3px;
+    text-align: center;
+}
