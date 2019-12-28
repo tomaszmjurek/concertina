@@ -8,7 +8,7 @@ INSERT INTO genres(name, supergenre)
            ('Psychodelic Rock', 'Rock'),
            ('Progressive Rock', 'Rock');
 
-INSERT INTO places(name, city, country)
+INSERT INTO places(name, city, street)
     VALUES ('Stadium', 'Poznan', 'Bulgarska 17'),
            ('Arena', 'Poznan', 'Stanislawa Wyspianskiego 33'),
            ('Blue Note', 'Poznan', 'Kosciuszki 79'),
