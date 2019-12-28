@@ -59,14 +59,29 @@ body {
 
 tr>td{
     text-align: center;
-    font-size: 13px;
+    font-size: 16px;
     margin: 0 0;
+    text-transform: uppercase;
 }
 
 #add_new {
     color: darkorange;
 }
 
+#add_new:hover{
+    color: whitesmoke;
+}
+
 .see_more{
     background-color: darkorange;
+    border: none;
+    border-radius: 10%;
+}
+
+.table td{
+    vertical-align: middle;
+}
+
+h1 {
+    padding-left: 10px;
 }
