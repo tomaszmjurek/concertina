@@ -13,34 +13,49 @@
     <link rel="stylesheet" type="text/css" href="{{ css_file }}"/>
 
     <title>{% block title %} {% endblock %}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 </head>
 <body>
     <div class="wrapper">
         <div id="sidenav">
+
             <div id="nav-header" class="nav-elem">
                 Concertina
             </div>
-            <div class="nav-elem">
-                Concerts
-            </div>
-            <div class="nav-elem">
-                Festivals
-            </div>
-            <div class="nav-elem">
-                Artists
-            </div>
-            <div class="nav-elem">
-                Albums
-            </div>
 
-            <div id="add_new" class="nav-elem">
-                Add new
-            </div>
+            <a href="{{ url_for('main.concerts') }}">
+                <div class="nav-elem"> Concerts </div>
+             </a>
+
+            <a href="{{ url_for('main.festivals') }}">
+                <div class="nav-elem"> Festivals </div>
+            </a>
+
+            <a href="{{ url_for('main.artists') }}">
+                <div class="nav-elem"> Artists </div>
+            </a>
+
+            <a href="{{ url_for('main.albums') }}">
+                <div class="nav-elem"> Albums </div>
+            </a>
+
+            <div id="add_new" class="nav-elem"> Add new form </div>
+            {% block form %} {% endblock %}
 
         </div>
 
         <div id="content">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+                <div id="flashes">
+                    <li> {{ message }} </li>
+                </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
             {% block content %}{% endblock %}
         </div>
 

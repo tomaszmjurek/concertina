@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block title %} Concerts {% endblock %}
+{% block add_new_href %} {{ url_for('forms.new_concert') }} {% endblock %}
+
 {%block content %}
 
 <div container>
@@ -17,15 +19,40 @@
                 <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ concert.band }}</td>
                 <td>{{ concert.name }} / {{ concert.city }}</td>
-                <td><button class="see_more" type="button">See more</button></td>
+                <td>
+                    <button class="see_more" type="button">Buy Ticket</button>
+                    <button class="alert-danger" type="button">Delete</button>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <div id="festivals">
-        <h1>Festivals</h1>
-    </div>
 </div>
+{% endblock %}
 
+{% block form %}
+    <div class="add_new_form">
+        <form action="/concerts" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.band.label.text }}
+        {{ form.band }}
+        </div>
+
+        <div>{{ form.place.label.text }}
+        {{ form.place }}
+        </div>
+
+        <div>{{ form.concert_date.label.text }}
+        {{ form.concert_date }}
+        </div>
+
+        <div>{{ form.tour.label.text }}
+        {{ form.tour }}
+        </div>
+
+        <button>{{ form.submit }}</button>
+
+        </form>
+    </div>
 {% endblock %}

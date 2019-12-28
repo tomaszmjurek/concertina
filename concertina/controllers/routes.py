@@ -1,4 +1,4 @@
-from concertina.controllers.main.controller import main_bp
+from concertina.controllers.controller import main_bp
 
 
 def init_blueprints(app):

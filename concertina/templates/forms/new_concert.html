@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} Flask {% endblock %}
+
+
+{% block content %}
+
+    <div class="add_new_form">
+        <form action="/new_concert" method="post" novalidate>
+            {{ form.csrf_token }}
+            <p>
+                <div>{{ form.band.label }} </br> </div>
+                {{ form.band }} </br>
+            </p>
+            <p>
+                <div>{{ form.place.label }} </br> </div>
+                {{ form.place }} </br>
+            </p>
+            <p>
+                <div>{{ form.concert_date.label }} </br> </div>
+                {{ form.concert_date }} </br>
+            </p>
+            <p>
+                <div>{{ form.tour.label }} </br> </div>
+                {{ form.tour }} </br>
+            </p>
+
+        </form>
+    </div>
+
+{% endblock %}

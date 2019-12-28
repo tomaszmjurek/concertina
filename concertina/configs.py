@@ -2,15 +2,10 @@ import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-USER = 'aleksykrolczyk'
+USER = 'aleks'
 HOST = 'localhost'
 PORT = '5432'
-DB_NAME = 'concertina_test'
-
-class Config:
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                    'postgresql://localhost/concertina'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+DB_NAME = 'concertina'
 
 
 def connect_db():
