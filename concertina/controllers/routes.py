@@ -1,5 +1,5 @@
-from concertina.controllers.controller import main_bp
+from concertina.controllers.concerts_controller import concerts_bp
 
 
 def init_blueprints(app):
-    app.register_blueprint(main_bp)
+    app.register_blueprint(concerts_bp)

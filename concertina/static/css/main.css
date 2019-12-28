@@ -75,6 +75,7 @@ tr>td{
 
 .table td{
     vertical-align: middle;
+    font-weight: bolder;
 }
 
 .add_new_form {

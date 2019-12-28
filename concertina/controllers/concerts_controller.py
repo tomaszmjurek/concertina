@@ -4,16 +4,16 @@ from concertina.controllers.forms import ConcertForm
 import psycopg2
 
 
-main_bp = Blueprint('main', __name__)
+concerts_bp = Blueprint('concerts', __name__)
 
 
-@main_bp.route('/')
-@main_bp.route('/homepage')
+@concerts_bp.route('/')
+@concerts_bp.route('/homepage')
 def homepage():
-    return redirect(url_for('main.concerts'))
+    return redirect(url_for('concerts.concerts'))
 
 
-@main_bp.route('/concerts')
+@concerts_bp.route('/concerts')
 def concerts():
     cursor.execute("SELECT * FROM getConcertsByDate() NATURAL JOIN PLACES")
     incoming = cursor.fetchall()
@@ -32,7 +32,7 @@ def concerts():
     return render_template('concerts.html', incoming=incoming, form=form)
 
 
-@main_bp.route('/concerts', methods=['POST'])
+@concerts_bp.route('/concerts', methods=['POST'])
 def concerts_add():
     form = ConcertForm()
     band = form.band.data
@@ -48,27 +48,9 @@ def concerts_add():
         start_pos = str(e).find('DETAIL') + 9
         flash(str(e)[start_pos:])
 
-    return redirect(url_for('main.concerts'))
+    return redirect(url_for('concerts.concerts'))
 
 
-
-@main_bp.route('/concerts/id/<int:id_concert>')
+@concerts_bp.route('/concerts/id/<int:id_concert>')
 def concert_info(id_concert):
     raise NotImplementedError()
-
-
-@main_bp.route('/festivals')
-def festivals():
-    raise NotImplementedError()
-
-
-@main_bp.route('/artists')
-def artists():
-    raise NotImplementedError()
-
-
-@main_bp.route('/albums')
-def albums():
-    raise NotImplementedError()
-
-
