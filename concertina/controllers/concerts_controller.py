@@ -51,6 +51,8 @@ def concerts_add():
     return redirect(url_for('concerts.concerts'))
 
 
-@concerts_bp.route('/concerts/id/<int:id_concert>')
-def concert_info(id_concert):
-    raise NotImplementedError()
+@concerts_bp.route('/concerts/delete/<int:id_concert>')
+def concert_delete(id_concert):
+    cursor.execute("DELETE FROM CONCERTS WHERE id_concert = %s::INTEGER", [id_concert])
+    flash("Concert deleted successfully!")
+    return redirect(url_for('concerts.concerts'))
