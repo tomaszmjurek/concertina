@@ -14,6 +14,13 @@ class ConcertForm(FlaskForm):
 
 
 class BandForm(FlaskForm):
-    name = StringField('Name') # warunek, nie ma juz takiego
+    name = StringField('Name') # TODO warunek, że nie ma juz takiego
     formation_date = DateField('Formation date', default=date.today())
+    submit = SubmitField('Add')
+
+
+class MusicianForm(FlaskForm):
+    name = StringField('Name')
+    band = SelectField('Band', choices=[], validators=[DataRequired()])
+    instrument = SelectField('Instrument', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')

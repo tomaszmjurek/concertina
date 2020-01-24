@@ -15,11 +15,11 @@ def homepage():
 @bands_bp.route('/bands')
 def bands():
     cursor.execute("SELECT * FROM bands ORDER BY name")
-    mybands = cursor.fetchall()
+    my_bands = cursor.fetchall()
 
     form = BandForm()
 
-    return render_template('bands.html', mybands=mybands, form=form)  # incoming=incoming,
+    return render_template('bands.html', my_bands=my_bands, form=form)  # incoming=incoming,
 
 
 @bands_bp.route('/bands', methods=['POST'])
