@@ -10,3 +10,9 @@ class ConcertForm(FlaskForm):
     concert_date = DateField('Concert date', validators=[DataRequired()], default=date.today())
     tour = StringField('Tour')
     submit = SubmitField('Add')
+
+
+class BandForm(FlaskForm):
+    name = StringField('Name') # warunek, nie ma juz takiego
+    formation_date = DateField('Formation date', default=date.today())
+    submit = SubmitField('Add')

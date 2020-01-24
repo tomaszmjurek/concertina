@@ -1,0 +1,56 @@
+from flask import render_template, Blueprint, redirect, url_for, flash
+from concertina.app import cursor
+from concertina.controllers.forms import BandForm
+import psycopg2
+
+bands_bp = Blueprint('bands', __name__)
+
+
+@bands_bp.route('/')
+@bands_bp.route('/homepage')
+def homepage():
+    return redirect(url_for('concerts.concerts'))  # TODO
+
+
+@bands_bp.route('/bands')
+def bands():
+    # cursor.execute("SELECT * FROM getConcertsByDate() NATURAL JOIN PLACES")
+    # incoming = cursor.fetchall()
+    #
+
+    cursor.execute("SELECT * FROM bands ORDER BY name")
+    mybands = cursor.fetchall()
+
+    form = BandForm()
+    # form.band.choices = [(band['name'], band['name']) for band in bands]
+
+    # cursor.execute("SELECT * FROM places")
+    # places = cursor.fetchall()
+    # form.place.choices = [(place['id_place'], f'{place["city"]} / {place["name"]}')
+    #                       for place in places]
+
+    return render_template('bands.html', mybands=mybands, form=form)  # incoming=incoming,
+
+
+@bands_bp.route('/bands', methods=['POST'])
+def bands_add():
+    form = BandForm()
+    name = form.name
+    formation_date = form.formation_date
+
+    try:
+        cursor.execute("INSERT INTO bands(name, formation_date)"
+                       "VALUES(%s::TEXT, %s::DATE)",
+                       (name, formation_date))
+    except psycopg2.IntegrityError as e:
+        start_pos = str(e).find('DETAIL') + 9
+        flash(str(e)[start_pos:])
+
+    return redirect(url_for('bands.bands')) #TODO
+
+
+@bands_bp.route('/bands/delete/<string:name>')
+def band_delete(name):
+    cursor.execute("DELETE FROM bands WHERE name = %s::TEXT", [name])
+    flash("Concert deleted successfully!")
+    return redirect(url_for('bands.bands'))

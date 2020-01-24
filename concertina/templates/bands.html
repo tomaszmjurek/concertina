@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %} Bands {% endblock %}
+
+{%block content %}
+
+<div container>
+    <div id="bands">
+        <h1>Bands</h1>
+    </div>
+
+    <table class="table">
+        <tbody>
+        {% for band in mybands %}
+            <tr>
+                <th scope="row">{{ loop.counter }}</th>
+                <td>{{ band.name}}</td>
+                <td><img src="https://picsum.photos/100/50"></img></td>
+                <td>{{ band.formation_date }}</td>
+                <td>
+                    <button class="see_more" type="button">Modify</button>
+                    <a href="{{ url_for('bands.band_delete', name=band.name) }}">
+                        <button class="alert-danger" type="button">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block form %}
+    <div class="add_new_form">
+        <form action="/bands" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.name.label.text }} </br>
+        {{ form.name }}
+        </div>
+
+        <div>{{ form.formation_date.label.text }} </br>
+        {{ form.formation_date }}
+        </div>
+
+        <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
+
+        </form>
+    </div>
+{% endblock %}

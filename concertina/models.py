@@ -1,4 +1,4 @@
-from concertina.configs import db
+from concertina.app import db
 from datetime import date, timedelta
 
 
