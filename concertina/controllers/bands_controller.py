@@ -9,7 +9,7 @@ bands_bp = Blueprint('bands', __name__)
 @bands_bp.route('/')
 @bands_bp.route('/homepage')
 def homepage():
-    return redirect(url_for('concerts.concerts'))  # TODO
+    return redirect(url_for('concerts.concerts'))
 
 
 @bands_bp.route('/bands')
@@ -35,8 +35,8 @@ def bands():
 @bands_bp.route('/bands', methods=['POST'])
 def bands_add():
     form = BandForm()
-    name = form.name
-    formation_date = form.formation_date
+    name = form.name.data
+    formation_date = form.formation_date.data
 
     try:
         cursor.execute("INSERT INTO bands(name, formation_date)"
@@ -46,11 +46,11 @@ def bands_add():
         start_pos = str(e).find('DETAIL') + 9
         flash(str(e)[start_pos:])
 
-    return redirect(url_for('bands.bands')) #TODO
+    return redirect(url_for('bands.bands'))
 
 
 @bands_bp.route('/bands/delete/<string:name>')
 def band_delete(name):
     cursor.execute("DELETE FROM bands WHERE name = %s::TEXT", [name])
-    flash("Concert deleted successfully!")
+    flash("Band deleted successfully!")
     return redirect(url_for('bands.bands'))
