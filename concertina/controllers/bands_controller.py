@@ -14,20 +14,10 @@ def homepage():
 
 @bands_bp.route('/bands')
 def bands():
-    # cursor.execute("SELECT * FROM getConcertsByDate() NATURAL JOIN PLACES")
-    # incoming = cursor.fetchall()
-    #
-
     cursor.execute("SELECT * FROM bands ORDER BY name")
     mybands = cursor.fetchall()
 
     form = BandForm()
-    # form.band.choices = [(band['name'], band['name']) for band in bands]
-
-    # cursor.execute("SELECT * FROM places")
-    # places = cursor.fetchall()
-    # form.place.choices = [(place['id_place'], f'{place["city"]} / {place["name"]}')
-    #                       for place in places]
 
     return render_template('bands.html', mybands=mybands, form=form)  # incoming=incoming,
 
