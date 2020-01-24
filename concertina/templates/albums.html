@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Albums {% endblock %}
+
+{%block content %}
+
+<div container>
+    <div id="albums">
+        <h1>Albums</h1>
+    </div>
+
+    <table class="table">
+        <tbody>
+        {% for album in my_albums %}
+            <tr>
+                <th scope="row">{{ loop.counter }}</th>
+                <td>{{ album.name}}</td>
+                <td><img src="https://picsum.photos/100/50"></img></td>
+                <td>{{ album.band }}</td>
+                <td>{{ album.genre }}</td>
+                <td>
+                    <button class="see_more" type="button">Modify</button>
+                    <a href="{{ url_for('albums.album_delete', id_album=album.id_album) }}">
+                        <button class="alert-danger" type="button">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block form %}
+    <div class="add_new_form">
+        <form action="/albums" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.band.label.text }} </br>
+        {{ form.band }}
+        </div>
+
+        <div>{{ form.name.label.text }} </br>
+        {{ form.name }}
+        </div>
+
+        <div>{{ form.genre.label.text }} </br>
+        {{ form.genre }}
+        </div>
+
+        <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
+
+        </form>
+    </div>
+{% endblock %}

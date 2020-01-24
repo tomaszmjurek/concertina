@@ -24,3 +24,10 @@ class MusicianForm(FlaskForm):
     band = SelectField('Band', choices=[], validators=[DataRequired()])
     instrument = SelectField('Instrument', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')
+
+
+class AlbumForm(FlaskForm):
+    band = SelectField('Band', choices=[], validators=[DataRequired()])
+    name = StringField('Name')
+    genre = SelectField('Genre', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Add')
