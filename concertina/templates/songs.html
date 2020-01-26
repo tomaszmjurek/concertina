@@ -6,7 +6,7 @@
 
 <div container>
     <div id="songs">
-        <h1>Songs</h1>
+        <h1>Songs on '{{ album_name }}' by '{{ band }}'</h1>
     </div>
 
     <table class="table">
@@ -18,7 +18,7 @@
                 <td>{{ song.name }}</td>
                 <td>
                     <button class="see_more" type="button">Modify</button>
-                    <a href="{{ url_for('songs.song_delete', id_song=song.id_song) }}">
+                    <a href="{{ url_for('songs.song_delete', id_song=song.id_song, id_album=song.id_album) }}">
                         <button class="alert-danger" type="button">Delete</button>
                     </a>
                 </td>
@@ -31,12 +31,8 @@
 
 {% block form %}
     <div class="add_new_form">
-        <form action="/songs" method="post" novalidate>
+        <form action="/songs/{{id_album}}" method="post" novalidate>
         {{ form.csrf_token }}
-
-        <div>{{ form.position.label.text }} </br>
-        {{ form.position }}
-        </div>
 
         <div>{{ form.name.label.text }} </br>
         {{ form.name }}

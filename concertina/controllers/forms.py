@@ -41,6 +41,5 @@ class AlbumForm(FlaskForm):
 
 
 class SongForm(FlaskForm):
-    position = StringField('Position')  # TODO automatycznie?
     name = StringField('Name')
     submit = SubmitField('Add')
