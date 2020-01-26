@@ -21,7 +21,7 @@
                 <td>{{ album.band }}</td>
                 <td>{{ album.genre }}</td>
                 <td>
-                    <button class="my-button see_more" type="button">Modify</button>
+                    <button class="my-button see_more" type="button">More</button>
                     <a href="{{ url_for('albums.album_delete', id_album=album.id_album) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>
