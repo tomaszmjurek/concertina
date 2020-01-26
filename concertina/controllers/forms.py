@@ -42,9 +42,11 @@ class AlbumForm(FlaskForm):
     band = SelectField('Band', choices=[], validators=[DataRequired()])
     name = StringField('Name')
     genre = SelectField('Genre', choices=[], validators=[DataRequired()])
-    submit = SubmitField('Add')
+    to_edit = SelectField('To edit')
+    submit = SubmitField('Add / Edit')
 
 
 class SongForm(FlaskForm):
     name = StringField('Name')
-    submit = SubmitField('Add')
+    to_edit = SelectField('To edit')
+    submit = SubmitField('Add / Edit')

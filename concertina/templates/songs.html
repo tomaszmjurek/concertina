@@ -17,9 +17,9 @@
                 <td>{{ song.position}}</td>
                 <td>{{ song.name }}</td>
                 <td>
-                    <button class="see_more" type="button">Modify</button>
+                    <button class="my-button see_more" type="button">Modify</button>
                     <a href="{{ url_for('songs.song_delete', id_song=song.id_song, id_album=song.id_album) }}">
-                        <button class="alert-danger" type="button">Delete</button>
+                        <button class="my-button delete-button" type="button">Delete</button>
                     </a>
                 </td>
             </tr>
@@ -36,6 +36,10 @@
 
         <div>{{ form.name.label.text }} </br>
         {{ form.name }}
+        </div>
+
+         <div>{{ form.to_edit.label.text }} </br>
+        {{ form.to_edit }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>

@@ -8,12 +8,6 @@ from concertina.utils import *
 musicians_bp = Blueprint('musicians', __name__)
 
 
-@musicians_bp.route('/')
-@musicians_bp.route('/homepage')
-def homepage():
-    return redirect(url_for('concerts.concerts'))
-
-
 @musicians_bp.route('/musicians')
 def musicians():
     cursor.execute("SELECT * FROM musicians order by name")

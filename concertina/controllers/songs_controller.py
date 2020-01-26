@@ -3,6 +3,7 @@ from concertina.app import cursor
 from concertina.controllers.forms import SongForm
 import psycopg2
 
+from concertina.utils import *
 
 songs_bp = Blueprint('songs', __name__)
 
@@ -17,6 +18,8 @@ def songs(id_album):
 
     form = SongForm()
 
+    form.to_edit.choices = Options.EMPTY + [(x['name'], x['name']) for x in my_songs]
+
     return render_template('songs.html', my_songs=my_songs, id_album=id_album,
                            album_name=album_info['name'], band=album_info['band'], form=form)
 
@@ -25,14 +28,26 @@ def songs(id_album):
 def songs_add(id_album):
     form = SongForm()
     name = form.name.data
+    to_edit = form.to_edit.data
 
-    try:
-        cursor.execute("INSERT INTO songs(name, id_album)"
-                       "VALUES(%s::TEXT, %s::INTEGER)",
-                        (name, id_album))
-    except psycopg2.IntegrityError as e:
-        start_pos = str(e).find('DETAIL') + 9
-        flash(str(e)[start_pos:])
+    if not is_set(to_edit):
+        try:
+            cursor.execute("INSERT INTO songs(name, id_album)"
+                           "VALUES(%s::TEXT, %s::INTEGER)",
+                            (name, id_album))
+        except psycopg2.IntegrityError as e:
+            flash('Such a song already exists!')
+        except Exception as e:
+            flash(Options.fields_not_set)
+    else:
+        try:
+            if is_set(name):
+                cursor.execute('UPDATE SONGS SET name = %s::TEXT WHERE name= %s::TEXT', (name, to_edit))
+
+        except psycopg2.IntegrityError as e:
+            flash('Such a song already exists!')
+        except Exception as e:
+            flash('Modification was not possible!')
 
     return redirect(url_for('songs.songs', id_album=id_album))
 

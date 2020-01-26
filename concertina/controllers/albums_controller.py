@@ -3,6 +3,7 @@ from concertina.app import cursor
 from concertina.controllers.forms import AlbumForm
 import psycopg2
 
+from concertina.utils import *
 
 albums_bp = Blueprint('albums', __name__)
 
@@ -22,11 +23,13 @@ def albums():
 
     cursor.execute("SELECT * FROM bands")
     bands = cursor.fetchall()
-    form.band.choices = [(band['name'], band['name']) for band in bands]
+    form.band.choices = Options.BLANK + [(band['name'], band['name']) for band in bands]
 
     cursor.execute("SELECT * FROM genres")
     genres = cursor.fetchall()
-    form.genre.choices = [(genre['name'], genre['name']) for genre in genres]
+    form.genre.choices = Options.BLANK + [(genre['name'], genre['name']) for genre in genres]
+
+    form.to_edit.choices = Options.EMPTY + [(x['name'], x['name']) for x in my_albums]
 
     return render_template('albums.html', my_albums=my_albums, form=form)
 
@@ -34,18 +37,32 @@ def albums():
 @albums_bp.route('/albums', methods=['POST'])
 def albums_add():
     form = AlbumForm()
-   # id_album = int(form.name.data) # TODO jak dodawac
     name = form.name.data
     band = form.band.data
     genre = form.genre.data
+    to_edit = form.to_edit.data
 
-    try:
-        cursor.execute("INSERT INTO albums(band, name, genre)"
-                        "VALUES(%s::TEXT, %s::TEXT, %s::TEXT)",
-                        (name, band, genre))
-    except psycopg2.IntegrityError as e:
-        start_pos = str(e).find('DETAIL') + 9
-        flash(str(e)[start_pos:])
+    if not is_set(to_edit):
+        try:
+            cursor.execute("INSERT INTO albums(band, name, genre)"
+                           "VALUES(%s::TEXT, %s::TEXT, %s::TEXT)",
+                           (name, band, genre))
+        except psycopg2.IntegrityError as e:
+            flash('Such album already exists!')
+        except Exception as e:
+            flash(Options.fields_not_set)
+    else:
+        try:
+            if is_set(name):
+                cursor.execute('UPDATE albums SET name = %s::TEXT WHERE name= %s::TEXT', (name, to_edit))
+            if is_set(band):
+                cursor.execute('UPDATE albums SET band = %s::TEXT WHERE name= %s::TEXT', (band, to_edit))
+            if is_set(genre):
+                cursor.execute('UPDATE albums SET genre = %s::TEXT WHERE name= %s::TEXT', (genre, to_edit))
+        except psycopg2.IntegrityError as e:
+            flash('Such album already exists!')
+        except Exception as e:
+            flash('Modification was not possible!')
 
     return redirect(url_for('albums.albums'))
 
