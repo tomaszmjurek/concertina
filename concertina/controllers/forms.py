@@ -50,3 +50,8 @@ class SongForm(FlaskForm):
     name = StringField('Name')
     to_edit = SelectField('To edit')
     submit = SubmitField('Add / Edit')
+
+
+class InstrumentForm(FlaskForm):
+    type = StringField('Type')
+    submit = SubmitField('Add / Edit')

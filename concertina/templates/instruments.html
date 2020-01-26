@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %} Concerts {% endblock %}
+
+{%block content %}
+
+<div container>
+    <div id="concerts">
+        <h1>Incoming concerts</h1>
+    </div>
+
+    <table class="table">
+        <tbody>
+        {% for instrument in instruments %}
+            <tr>
+                <th scope="row">{{ loop.counter }}</th>
+                <td>{{ instrument.type }}</td>
+                <td>
+                    <a href="{{ url_for('instruments.instruments_delete', type=instrument.type) }}">
+                        <button class="my-button delete-button" type="button">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block form %}
+    <div class="add_new_form">
+        <form action="/instruments" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.type.label.text }} </br>
+        {{ form.type }}
+        </div>
+
+        <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
+
+        </form>
+    </div>
+{% endblock %}
