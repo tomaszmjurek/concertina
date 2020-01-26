@@ -8,7 +8,7 @@ festivals_bp = Blueprint('festivals', __name__)
 
 @festivals_bp.route('/festivals')
 def festivals():
-    cursor.execute("SELECT * FROM festivals NATURAL JOIN places ORDER BY date_start DESC")
+    cursor.execute("SELECT * FROM festivals f JOIN PLACES p  ON  f.id_place = p.id_place ORDER BY f.date_start DESC")
     incoming = cursor.fetchall()
 
     form = FestivalForm()
@@ -24,7 +24,7 @@ def festivals():
 @festivals_bp.route('/festivals', methods=['POST'])
 def festivals_add():
     form = FestivalForm()
-    name = form.data.name
+    name = form.name.data
     id_place = int(form.place.data)
     date_start = form.date_start.data
 

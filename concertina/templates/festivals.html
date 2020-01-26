@@ -14,9 +14,9 @@
         {% for festival in incoming %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
-                <td>{{ festival.concert_date}}</td>
+                <td>{{ festival.date_start}}</td>
                 <td><img src="https://picsum.photos/100/50"></img></td>
-                <td>{{ concert.name }} / {{ concert.city }}</td>
+                <td>{{ festival.name }} / {{ festival.city }}</td>
                 <td>
                     <button class="see_more" type="button">Buy Ticket</button>
                     <a href="{{ url_for('festivals.festivals_delete', id_festival=festival.id_festival) }}">
