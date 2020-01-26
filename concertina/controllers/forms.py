@@ -14,7 +14,7 @@ class ConcertForm(FlaskForm):
 
 
 class BandForm(FlaskForm):
-    name = StringField('Name') # TODO warunek, że nie ma juz takiego
+    name = StringField('Name')  # TODO sprawdzic czy mozna taki sam
     formation_date = DateField('Formation date', default=date.today())
     submit = SubmitField('Add')
 
@@ -25,14 +25,22 @@ class MusicianForm(FlaskForm):
     instrument = SelectField('Instrument', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')
 
+
+class FestivalForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    date_start = DateField('Start date', default=date.today(), validators=[DataRequired()])
+    place = SelectField('Place', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Add')
+
+
 class AlbumForm(FlaskForm):
     band = SelectField('Band', choices=[], validators=[DataRequired()])
     name = StringField('Name')
     genre = SelectField('Genre', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')
 
-class FestivalForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    date_start = DateField('Start date', default=date.today(), validators=[DataRequired()])
-    place = SelectField('Place', choices=[], validators=[DataRequired()])
+
+class SongForm(FlaskForm):
+    position = StringField('Position')  # TODO automatycznie?
+    name = StringField('Name')
     submit = SubmitField('Add')

@@ -15,7 +15,7 @@ def homepage():
 
 @albums_bp.route('/albums')
 def albums():
-    cursor.execute("SELECT name, band, genre FROM albums ORDER BY name")
+    cursor.execute("SELECT * FROM albums ORDER BY name")
     my_albums = cursor.fetchall()
 
     form = AlbumForm()

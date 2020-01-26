@@ -1,28 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %} Albums {% endblock %}
+{% block title %} Songs {% endblock %}
 
 {%block content %}
 
 <div container>
-    <div id="albums">
-        <h1>Albums</h1>
+    <div id="songs">
+        <h1>Songs</h1>
     </div>
 
     <table class="table">
         <tbody>
-        {% for album in my_albums %}
+        {% for song in my_songs %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
-                <td>
-                    <a href="{{ url_for('songs.songs', id_album=album.id_album)}}"> {{ album.name }} </a>
-                </td>
-                <td><img src="https://picsum.photos/100/50"></img></td>
-                <td>{{ album.band }}</td>
-                <td>{{ album.genre }}</td>
+                <td>{{ song.position}}</td>
+                <td>{{ song.name }}</td>
                 <td>
                     <button class="see_more" type="button">Modify</button>
-                    <a href="{{ url_for('albums.album_delete', id_album=album.id_album) }}">
+                    <a href="{{ url_for('songs.song_delete', id_song=song.id_song) }}">
                         <button class="alert-danger" type="button">Delete</button>
                     </a>
                 </td>
@@ -35,19 +31,15 @@
 
 {% block form %}
     <div class="add_new_form">
-        <form action="/albums" method="post" novalidate>
+        <form action="/songs" method="post" novalidate>
         {{ form.csrf_token }}
 
-        <div>{{ form.band.label.text }} </br>
-        {{ form.band }}
+        <div>{{ form.position.label.text }} </br>
+        {{ form.position }}
         </div>
 
         <div>{{ form.name.label.text }} </br>
         {{ form.name }}
-        </div>
-
-        <div>{{ form.genre.label.text }} </br>
-        {{ form.genre }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
