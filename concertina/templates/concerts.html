@@ -14,15 +14,13 @@
         {% for concert in incoming %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
+                <td>{{ concert.id_concert }}</td>
                 <td>{{ concert.concert_date}}</td>
                 <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ concert.band }}</td>
                 <td>{{ concert.name }} / {{ concert.city }}</td>
                 <td>
                     <button class="my-button see_more" type="button">Buy Ticket</button>
-                    <a href="{{ url_for('concerts.concert_modify', id_concert=concert.id_concert), }}">
-                        <buttom class="my-button modify-button" type="buttom">Modify</buttom>
-                    </a>
                     <a href="{{ url_for('concerts.concert_delete', id_concert=concert.id_concert) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>
@@ -53,6 +51,10 @@
 
         <div>{{ form.tour.label.text }} </br>
         {{ form.tour }}
+        </div>
+
+        <div>{{ form.to_edit.label.text }} </br>
+        {{ form.to_edit }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>

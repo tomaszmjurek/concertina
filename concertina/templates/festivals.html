@@ -14,6 +14,7 @@
         {% for festival in incoming %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
+                <td>{{ festival.id_festival }}</td>
                 <td>{{ festival.date_start}}</td>
                 <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ festival.name }} / {{ festival.city }}</td>
@@ -45,6 +46,10 @@
 
         <div>{{ form.date_start.label.text }} </br>
         {{ form.date_start }}
+        </div>
+
+        <div>{{ form.to_edit.label.text }} </br>
+        {{  form.to_edit }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>

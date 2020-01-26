@@ -14,7 +14,7 @@
         {% for band in my_bands %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
-                <td>{{ band.name}}</td>
+                <td>{{ band.name }}</td>
                 <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ band.formation_date }}</td>
                 <td>
@@ -41,6 +41,10 @@
 
         <div>{{ form.formation_date.label.text }} </br>
         {{ form.formation_date }}
+        </div>
+
+       <div>{{ form.to_edit.label.text }} </br>
+        {{ form.to_edit }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
