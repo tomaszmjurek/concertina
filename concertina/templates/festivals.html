@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %} Festivals {% endblock %}
+
+{%block content %}
+
+<div container>
+    <div id="concerts">
+        <h1>Incoming festivals</h1>
+    </div>
+
+    <table class="table">
+        <tbody>
+        {% for festival in incoming %}
+            <tr>
+                <th scope="row">{{ loop.counter }}</th>
+                <td>{{ festival.concert_date}}</td>
+                <td><img src="https://picsum.photos/100/50"></img></td>
+                <td>{{ concert.name }} / {{ concert.city }}</td>
+                <td>
+                    <button class="see_more" type="button">Buy Ticket</button>
+                    <a href="{{ url_for('festivals.festivals_delete', id_festival=festival.id_festival) }}">
+                        <button class="alert-danger" type="button">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block form %}
+    <div class="add_new_form">
+        <form action="/festivals" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.name.label.text }} </br>
+        {{ form.name }}
+        </div>
+
+        <div>{{ form.place.label.text }} </br>
+        {{ form.place }}
+        </div>
+
+        <div>{{ form.date_start.label.text }} </br>
+        {{ form.date_start }}
+        </div>
+
+        <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
+
+        </form>
+    </div>
+{% endblock %}

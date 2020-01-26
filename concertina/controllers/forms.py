@@ -25,9 +25,14 @@ class MusicianForm(FlaskForm):
     instrument = SelectField('Instrument', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')
 
-
 class AlbumForm(FlaskForm):
     band = SelectField('Band', choices=[], validators=[DataRequired()])
     name = StringField('Name')
     genre = SelectField('Genre', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Add')
+
+class FestivalForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    date_start = DateField('Start date', default=date.today(), validators=[DataRequired()])
+    place = SelectField('Place', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')
