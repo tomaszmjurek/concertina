@@ -4,6 +4,6 @@ def is_set(value):
 
 class Options:
     BLANK = [(None, 'Fill this')]
-    EMPTY = [(None, 'Leave empty to add')]
+    EMPTY = [(None, 'Leave as it is to add')]
 
     fields_not_set = 'Some required fields were not set!'

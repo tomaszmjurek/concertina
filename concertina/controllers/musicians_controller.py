@@ -10,7 +10,7 @@ musicians_bp = Blueprint('musicians', __name__)
 
 @musicians_bp.route('/musicians')
 def musicians():
-    cursor.execute("SELECT * FROM musicians order by name")
+    cursor.execute("SELECT * FROM musicians ORDER BY band, name")
     my_musicians = cursor.fetchall()
 
     form = MusicianForm()
