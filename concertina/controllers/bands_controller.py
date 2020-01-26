@@ -3,6 +3,8 @@ from concertina.app import cursor
 from concertina.controllers.forms import BandForm
 import psycopg2
 
+from concertina.utils import *
+
 bands_bp = Blueprint('bands', __name__)
 
 
@@ -19,7 +21,9 @@ def bands():
 
     form = BandForm()
 
-    return render_template('bands.html', my_bands=my_bands, form=form)  # incoming=incoming,
+    form.to_edit.choices = Options.EMPTY + [(x['name'], x['name']) for x in my_bands]
+
+    return render_template('bands.html', my_bands=my_bands, form=form)
 
 
 @bands_bp.route('/bands', methods=['POST'])
@@ -27,14 +31,27 @@ def bands_add():
     form = BandForm()
     name = form.name.data
     formation_date = form.formation_date.data
+    to_edit = form.to_edit.data
 
-    try:
-        cursor.execute("INSERT INTO bands(name, formation_date)"
-                       "VALUES(%s::TEXT, %s::DATE)",
-                       (name, formation_date))
-    except psycopg2.IntegrityError as e:
-        start_pos = str(e).find('DETAIL') + 9
-        flash(str(e)[start_pos:])
+    if not is_set(to_edit):
+        try:
+            cursor.execute("INSERT INTO bands(name, formation_date)"
+                           "VALUES(%s::TEXT, %s::DATE)",
+                           (name, formation_date))
+        except psycopg2.IntegrityError as e:
+           flash('Such a band already exists!')
+        except Exception as e:
+            flash(Options.fields_not_set)
+    else:
+        try:
+            if is_set(name):
+                cursor.execute('UPDATE BANDS SET name = %s::TEXT WHERE name= %s::TEXT', (name, to_edit))
+            if is_set(formation_date):
+                cursor.execute('UPDATE BANDS SET formation_date = %s::DATE WHERE name= %s::TEXT', (formation_date, to_edit))
+        except psycopg2.IntegrityError as e:
+            flash('Such a band already exists!')
+        except Exception as e:
+            flash('Modification was not possible!')
 
     return redirect(url_for('bands.bands'))
 
