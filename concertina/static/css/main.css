@@ -116,3 +116,26 @@ tr>td{
     padding-top: 3px;
     text-align: center;
 }
+
+.my-button{
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  border-radius: 8px;
+    text-transform: uppercase;
+}
+
+.modify-button {
+  background-color: darkorange;
+
+}
+
+.delete-button {
+  background-color: darkred;
+
+}
+
+.see_more {
+  background-color: forestgreen;
+}

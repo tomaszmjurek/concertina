@@ -56,3 +56,8 @@ def concert_delete(id_concert):
     cursor.execute("DELETE FROM CONCERTS WHERE id_concert = %s::INTEGER", [id_concert])
     flash("Concert deleted successfully!")
     return redirect(url_for('concerts.concerts'))
+
+
+@concerts_bp.route('/concerts/modify/<int:id_concert>')
+def concert_modify(id_concert):
+    return redirect(url_for('concerts,concerts'))

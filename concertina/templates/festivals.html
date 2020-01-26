@@ -18,9 +18,9 @@
                 <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ festival.name }} / {{ festival.city }}</td>
                 <td>
-                    <button class="see_more" type="button">Buy Ticket</button>
+                    <button class="my-button see_more" type="button">Buy Ticket</button>
                     <a href="{{ url_for('festivals.festivals_delete', id_festival=festival.id_festival) }}">
-                        <button class="alert-danger" type="button">Delete</button>
+                        <button class="my-button delete-button" type="button">Delete</button>
                     </a>
                 </td>
             </tr>
