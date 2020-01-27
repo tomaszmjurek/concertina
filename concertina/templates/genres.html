@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %} Places {% endblock %}
+{% block title %} Genres {% endblock %}
 
 {%block content %}
 
 <div container>
-    <div id="places" style="display: inline-flex">
-        <h1>Places</h1>
+    <div id="genres" style="display: inline-flex">
+        <h1>Genres</h1>
     </div>
+
     <div style="display: inline-flex; float: right; padding-top: 7px">
-        <form action="/places_search" method="post">
+        <form action="/genres_search" method="post">
             {{ query_form.csrf_token }}
             {{ query_form.query }}
             <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>
@@ -18,13 +19,13 @@
 
     <table class="table">
         <tbody>
-        {% for place in places %}
+        {% for genre in genres%}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
-                <td>{{ place.name }}</td>
-                <td>{{ place.city }} / {{ place.street }}</td>
+                <td>{{ genre.name }}</td>
+                {% if genre.supergenre %} <td>{{ genre.supergenre }}</td> {% else %} <td></td> {% endif %}
                 <td>
-                    <a href="{{ url_for('places.places_delete', id_place=place.id_place) }}">
+                    <a href="{{ url_for('genres.genres_delete', name=genre.name) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>
                 </td>
@@ -37,23 +38,19 @@
 
 {% block form %}
     <div class="add_new_form">
-        <form action="/places" method="post" novalidate>
+        <form action="/genres" method="post" novalidate>
         {{ form.csrf_token }}
 
         <div>{{ form.name.label.text }} </br>
         {{ form.name }}
         </div>
 
-        <div>{{ form.city.label.text }} </br>
-        {{ form.city }}
+        <div>{{ form.supergenre.label.text }} </br>
+        {{ form.supergenre }}
         </div>
 
-        <div>{{ form.street.label.text }} </br>
-        {{ form.street }}
-        </div>
-
-        <div>{{ form.to_edit.label.text }} </br>
-        {{  form.to_edit }}
+         <div>{{ form.to_edit.label.text }} </br>
+        {{ form.to_edit }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>

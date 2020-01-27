@@ -23,7 +23,7 @@ INSERT INTO musicians(name, band, instrument)
     VALUES ('Mick Jagger', 'The Rolling Stones', 'Vocal'),
            ('Keith Richards', 'The Rolling Stones', 'Guitar'),
            ('Ron Wood', 'The Rolling Stones', 'Bass'),
-           ('Charlie Watts', 'The Rolling Stones', 'Keyboard')
+           ('Charlie Watts', 'The Rolling Stones', 'Keyboard');
 
 INSERT INTO albums(band, name, genre)
     VALUES ('The Rolling Stones', 'Blue and Lonesome', 'Blues');

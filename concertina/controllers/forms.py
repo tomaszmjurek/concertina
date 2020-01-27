@@ -53,7 +53,7 @@ class SongForm(FlaskForm):
 
 class InstrumentForm(FlaskForm):
     type = StringField('Instrument type')
-    to_edit = SelectField('To edit')
+    to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')
 
 
@@ -66,5 +66,12 @@ class PlaceForm(FlaskForm):
     name = StringField('Name')
     city = StringField('City')
     street = StringField('Street')
-    to_edit = SelectField('To edit')
+    to_edit = SelectField('Id/Name to edit')
+    submit = SubmitField('Add / Edit')
+
+
+class GenreForm(FlaskForm):
+    name = StringField('Name')
+    supergenre = SelectField('Supergenre', choices=[])
+    to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')

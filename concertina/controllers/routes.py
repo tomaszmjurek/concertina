@@ -1,6 +1,7 @@
 from concertina.controllers.concerts_controller import concerts_bp
 from concertina.controllers.bands_controller import bands_bp
 from concertina.controllers.festivals_controller import festivals_bp
+from concertina.controllers.genres_controller import genres_bp
 from concertina.controllers.instruments_controller import instruments_bp
 from concertina.controllers.musicians_controller import musicians_bp
 from concertina.controllers.albums_controller import albums_bp
@@ -17,3 +18,4 @@ def init_blueprints(app):
     app.register_blueprint(songs_bp)
     app.register_blueprint(instruments_bp)
     app.register_blueprint(places_bp)
+    app.register_blueprint(genres_bp)
