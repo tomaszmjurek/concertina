@@ -142,4 +142,9 @@ tr>td{
 
 #sidenav-items{
     overflow: scroll;
+    height: 340px;
+}
+
+#sidenav-form{
+    border-top: 4px solid #2a2a2b;
 }
