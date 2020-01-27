@@ -11,7 +11,8 @@
     <div style="display: inline-flex; float: right; padding-top: 7px">
         <form action="/concerts_search" method="post">
             {{ query_form.csrf_token }}
-            {{ query_form.query }}
+            Days from today: {{ query_form.days }}
+            Query: {{ query_form.query }}
             <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>
         </form>
     </div>
