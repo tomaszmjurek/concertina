@@ -9,7 +9,7 @@
         <h1>Albums having {{ award_name }} </h1>
     </div>
     <div style="display: inline-flex; float: right; padding-top: 7px">
-        <form action="/award_receptions_search" method="post">
+        <form action="/award_receptions_search/{{ award_name }}" method="post">
             {{ query_form.csrf_token }}
             {{ query_form.query }}
             <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>

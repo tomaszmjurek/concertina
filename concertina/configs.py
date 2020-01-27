@@ -2,10 +2,10 @@ import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-USER = 'postgres'
+USER = 'aleksykrolczyk'
 HOST = 'localhost'
-PORT = '5433'
-DB_NAME = 'pingu'
+PORT = '5432'
+DB_NAME = 'concertina'
 
 
 def connect_db():
@@ -14,7 +14,6 @@ def connect_db():
             user=USER,
             host=HOST,
             port=PORT,
-            password='dumbo',
             database=DB_NAME,
             cursor_factory=RealDictCursor,
         )

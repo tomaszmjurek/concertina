@@ -31,7 +31,7 @@
                     <a href="{{ url_for('songs.songs', id_album=album.id_album)}}"> {{ album.name }} </a>
                 </td>
                 <td>{{ album.band }}</td>
-                <td>{{ album.genre }}</td>
+                {% if album.genre %} <td>{{ album.genre }}</td> {% else %} <td></td> {% endif %}
                 <td>
                     <a href="{{ url_for('albums.album_delete', id_album=album.id_album) }}">
                         <button class="my-button delete-button" type="button">Delete</button>

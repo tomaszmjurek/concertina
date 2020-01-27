@@ -29,13 +29,13 @@ def award_receptions(award=None, query=None):
     return render_template('award_receptions.html', my_award_receptions=awards_albums, query_form=query_form, form=form, award_name=award)
 
 
-@award_receptions_bp.route('/albums_search', methods=['POST'])
-def albums_search():
+@award_receptions_bp.route('/award_receptions_search/<string:award>', methods=['POST'])
+def albums_search(award):
     form = QueryForm()
     query = form.query.data
     if not is_set(query):
         query = None
-    return redirect(url_for('albums.albums', query=query))
+    return redirect(url_for('award_receptions.award_receptions', award=award, query=query))
 
 
 @award_receptions_bp.route('/award_receptions/<string:award>', methods=['POST'])
