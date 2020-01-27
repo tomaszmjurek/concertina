@@ -28,14 +28,14 @@ def concerts(query=None):
 
     cursor.execute("SELECT * FROM bands")
     bands = cursor.fetchall()
-    form.band.choices = Options.BLANK + [(band['name'], band['name']) for band in bands]
+    form.band.choices = Options.BLANK + sorted([(band['name'], band['name']) for band in bands], key=lambda x: x[1])
 
     cursor.execute("SELECT * FROM places")
     places = cursor.fetchall()
-    form.place.choices = Options.BLANK + [(place['id_place'], f'{place["city"]} / {place["name"]}')
-                          for place in places]
+    form.place.choices = Options.BLANK + sorted([(place['id_place'], f'{place["city"]} / {place["name"]}')
+                          for place in places], key=lambda x: x[1])
 
-    form.to_edit.choices = Options.EMPTY + [(x['id_concert'], x['id_concert']) for x in incoming]
+    form.to_edit.choices = Options.EMPTY + sorted([(x['id_concert'], x['id_concert']) for x in incoming], key=lambda x: x[1])
 
     return render_template('concerts.html', incoming=incoming, form=form, query_form=query_form)
 

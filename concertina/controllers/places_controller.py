@@ -20,7 +20,7 @@ def places(query=None):
     query_form = QueryForm()
     form = PlaceForm()
 
-    form.to_edit.choices = Options.EMPTY + [(x['id_place'], f'{x["name"]}/{x["city"]}') for x in places]
+    form.to_edit.choices = Options.EMPTY + sorted([(x['id_place'], f'{x["name"]}/{x["city"]}') for x in places], key=lambda x: x[1])
 
     return render_template('places.html', places=places, form=form, query_form=query_form)
 

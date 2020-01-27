@@ -22,10 +22,10 @@ def festivals(query=None):
 
     cursor.execute("SELECT * FROM places")
     places = cursor.fetchall()
-    form.place.choices = BLANK_OPTION + [(place['id_place'], f'{place["city"]} / {place["name"]}')
-                                         for place in places]
+    form.place.choices = BLANK_OPTION + sorted([(place['id_place'], f'{place["city"]} / {place["name"]}')
+                                         for place in places], key=lambda x: x[1])
 
-    form.to_edit.choices = Options.EMPTY + [(x['id_festival'], x['id_festival']) for x in incoming]
+    form.to_edit.choices = Options.EMPTY + sorted([(x['id_festival'], x['id_festival']) for x in incoming], key=lambda x: x[1])
 
     return render_template('festivals.html', incoming=incoming, form=form, query_form=query_form)
 

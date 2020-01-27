@@ -18,7 +18,7 @@ def songs(id_album):
 
     form = SongForm()
 
-    form.to_edit.choices = Options.EMPTY + [(x['name'], x['name']) for x in my_songs]
+    form.to_edit.choices = Options.EMPTY + sorted([(x['name'], x['name']) for x in my_songs], key=lambda x: x[1])
 
     return render_template('songs.html', my_songs=my_songs, id_album=id_album,
                            album_name=album_info['name'], band=album_info['band'], form=form)

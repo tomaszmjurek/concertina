@@ -20,7 +20,7 @@ def instruments(query=None):
     query_form = QueryForm()
     form = InstrumentForm()
 
-    form.to_edit.choices = Options.EMPTY + [(x['type'], x['type']) for x in instruments]
+    form.to_edit.choices = Options.EMPTY + sorted([(x['type'], x['type']) for x in instruments], key=lambda x: x[1])
 
     return render_template('instruments.html', instruments=instruments, form=form, query_form=query_form)
 

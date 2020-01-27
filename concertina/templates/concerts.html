@@ -25,6 +25,7 @@
                 <td>{{ concert.concert_date}}</td>
                 <td>{{ concert.band }}</td>
                 <td>{{ concert.name }} / {{ concert.city }}</td>
+                {% if concert.tour %} <td>{{ concert.tour }}</td> {% else %} <td></td> {% endif %}
                 <td>
                     <a href="{{ url_for('concerts.concert_delete', id_concert=concert.id_concert) }}">
                         <button class="my-button delete-button" type="button">Delete</button>

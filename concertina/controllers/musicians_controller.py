@@ -21,12 +21,12 @@ def musicians(query=None):
 
     cursor.execute("SELECT * FROM bands")
     bands = cursor.fetchall()
-    form.band.choices = Options.BLANK + [(band['name'], band['name']) for band in bands]
+    form.band.choices = Options.BLANK + sorted([(band['name'], band['name']) for band in bands], key=lambda x: x[1])
 
     cursor.execute("SELECT * FROM instruments")
     instruments = cursor.fetchall()
-    form.instrument.choices = Options.BLANK + [(instrument['type'], instrument['type'])
-                               for instrument in instruments]
+    form.instrument.choices = Options.BLANK + sorted([(instrument['type'], instrument['type'])
+                               for instrument in instruments], key=lambda x: x[1])
 
     form.to_edit.choices = Options.EMPTY + [(x['name'], x['name']) for x in my_musicians]
 
