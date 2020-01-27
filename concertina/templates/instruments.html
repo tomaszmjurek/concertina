@@ -5,8 +5,16 @@
 {%block content %}
 
 <div container>
-    <div id="instruments">
+    <div id="instruments" style="display: inline-flex">
         <h1>Instruments</h1>
+    </div>
+
+    <div style="display: inline-flex; float: right; padding-top: 7px">
+        <form action="/instruments_search" method="post">
+            {{ query_form.csrf_token }}
+            {{ query_form.query }}
+            <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>
+        </form>
     </div>
 
     <table class="table">

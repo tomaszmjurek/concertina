@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint, redirect, url_for, flash
 from concertina.app import cursor
-from concertina.controllers.forms import FestivalForm
+from concertina.controllers.forms import FestivalForm, QueryForm
 import psycopg2
 
 from concertina.utils import *
@@ -10,10 +10,14 @@ BLANK_OPTION = [(None, 'Fill this')]
 
 
 @festivals_bp.route('/festivals')
-def festivals():
+@festivals_bp.route('/festivals/<string:query>')
+def festivals(query=None):
     cursor.execute("SELECT * FROM festivals f JOIN PLACES p  ON  f.id_place = p.id_place ORDER BY f.date_start DESC")
     incoming = cursor.fetchall()
+    if query:
+        incoming = filter_by_query(incoming, query)
 
+    query_form = QueryForm()
     form = FestivalForm()
 
     cursor.execute("SELECT * FROM places")
@@ -23,7 +27,17 @@ def festivals():
 
     form.to_edit.choices = Options.EMPTY + [(x['id_festival'], x['id_festival']) for x in incoming]
 
-    return render_template('festivals.html', incoming=incoming, form=form)
+    return render_template('festivals.html', incoming=incoming, form=form, query_form=query_form)
+
+
+@festivals_bp.route('/festivals_search', methods=['POST'])
+def festivals_search():
+    form = QueryForm()
+    query = form.query.data
+    if not is_set(query):
+        query = None
+    return redirect(url_for('festivals.festivals', query=query))
+
 
 
 @festivals_bp.route('/festivals', methods=['POST'])

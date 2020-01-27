@@ -1,19 +1,35 @@
 from flask import render_template, Blueprint, redirect, url_for, flash
 from concertina.app import cursor
-from concertina.controllers.forms import InstrumentForm
+from concertina.controllers.forms import InstrumentForm, QueryForm
 import psycopg2
+
+from concertina.utils import *
 
 instruments_bp = Blueprint('instruments', __name__)
 
 
 @instruments_bp.route('/instruments')
-def instruments():
+@instruments_bp.route('/instruments/<string:query>')
+def instruments(query=None):
     cursor.execute("SELECT * FROM INSTRUMENTS ORDER BY TYPE ASC")
     instruments = cursor.fetchall()
 
+    if query:
+        instruments= filter_by_query(instruments, query)
+
+    query_form = QueryForm()
     form = InstrumentForm()
 
-    return render_template('instruments.html', instruments=instruments, form=form)
+    return render_template('instruments.html', instruments=instruments, form=form, query_form=query_form)
+
+
+@instruments_bp.route('/instruments_search', methods=['POST'])
+def instruments_search():
+    form = QueryForm()
+    query = form.query.data
+    if not is_set(query):
+        query = None
+    return redirect(url_for('instruments.instruments', query=query))
 
 
 @instruments_bp.route('/instruments', methods=['POST'])
