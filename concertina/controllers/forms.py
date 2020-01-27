@@ -55,3 +55,8 @@ class SongForm(FlaskForm):
 class InstrumentForm(FlaskForm):
     type = StringField('Type')
     submit = SubmitField('Add / Edit')
+
+
+class QueryForm(FlaskForm):
+    query = StringField('Query')
+    submit = SubmitField('Search')

@@ -1,6 +1,6 @@
-from flask import render_template, Blueprint, redirect, url_for, flash
+from flask import render_template, Blueprint, redirect, url_for, flash, request
 from concertina.app import cursor
-from concertina.controllers.forms import MusicianForm
+from concertina.controllers.forms import MusicianForm, QueryForm
 import psycopg2
 
 from concertina.utils import *
@@ -9,11 +9,15 @@ musicians_bp = Blueprint('musicians', __name__)
 
 
 @musicians_bp.route('/musicians')
-def musicians():
+@musicians_bp.route('/musicians/<string:query>')
+def musicians(query=None):
     cursor.execute("SELECT * FROM musicians ORDER BY band, name")
     my_musicians = cursor.fetchall()
+    if query:
+        my_musicians = filter_by_query(my_musicians, query)
 
     form = MusicianForm()
+    query_form = QueryForm()
 
     cursor.execute("SELECT * FROM bands")
     bands = cursor.fetchall()
@@ -26,7 +30,16 @@ def musicians():
 
     form.to_edit.choices = Options.EMPTY + [(x['name'], x['name']) for x in my_musicians]
 
-    return render_template('musicians.html', my_musicians=my_musicians, form=form)
+    return render_template('musicians.html', my_musicians=my_musicians, form=form, query_form=query_form)
+
+
+@musicians_bp.route('/musicians_search', methods=['POST'])
+def musicians_search():
+    form = QueryForm()
+    query = form.query.data
+    if not is_set(query):
+        query = None
+    return redirect(url_for('musicians.musicians', query=query))
 
 
 @musicians_bp.route('/musicians', methods=['POST'])

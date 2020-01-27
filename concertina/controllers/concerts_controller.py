@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, redirect, url_for, flash
 
 from concertina.app import cursor
-from concertina.controllers.forms import ConcertForm
+from concertina.controllers.forms import ConcertForm, QueryForm
 import psycopg2
 
 from concertina.utils import *
@@ -16,11 +16,15 @@ def homepage():
 
 
 @concerts_bp.route('/concerts')
-def concerts():
+@concerts_bp.route('/concerts/<string:query>')
+def concerts(query=None):
     cursor.execute("SELECT * FROM getConcertsByDate() NATURAL JOIN PLACES ORDER BY concert_date DESC")
     incoming = cursor.fetchall()
+    if query:
+        incoming = filter_by_query(incoming, query)
 
     form = ConcertForm()
+    query_form = QueryForm()
 
     cursor.execute("SELECT * FROM bands")
     bands = cursor.fetchall()
@@ -33,7 +37,17 @@ def concerts():
 
     form.to_edit.choices = Options.EMPTY + [(x['id_concert'], x['id_concert']) for x in incoming]
 
-    return render_template('concerts.html', incoming=incoming, form=form)
+    return render_template('concerts.html', incoming=incoming, form=form, query_form=query_form)
+
+
+@concerts_bp.route('/concerts_search', methods=['POST'])
+def concerts_search():
+    form = QueryForm()
+    query = form.query.data
+    if not is_set(query):
+        query = None
+    return redirect(url_for('concerts.concerts', query=query))
+
 
 
 @concerts_bp.route('/concerts', methods=['POST'])
