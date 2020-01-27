@@ -65,8 +65,10 @@ class QueryForm(FlaskForm):
     submit = SubmitField('Search')
 
 
-class ConcertsQueryForm(QueryForm):
+class ConcertsQueryForm(FlaskForm):
     days = IntegerField('Days')
+    query = StringField('Query')
+    submit = SubmitField('Search')
 
 
 class PlaceForm(FlaskForm):

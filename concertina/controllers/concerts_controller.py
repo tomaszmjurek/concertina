@@ -17,8 +17,9 @@ def homepage():
 
 @concerts_bp.route('/concerts')
 @concerts_bp.route('/concerts/<string:query>/<int:days>')
-def concerts(query=None, days=None):
+def concerts(days=None, query=None):
     days = days or 30
+    query = None if query == 'none' else query
     cursor.execute("SELECT * FROM getConcertsByDate(days_number := %s::INTEGER) NATURAL JOIN PLACES "
                    "ORDER BY concert_date DESC", (days,))
     incoming = cursor.fetchall()
@@ -48,9 +49,8 @@ def concerts_search():
     query = form.query.data
     days = form.days.data or 30
     if not is_set(query):
-        query = None
+        query = 'none'
     return redirect(url_for('concerts.concerts', query=query, days=days))
-
 
 
 @concerts_bp.route('/concerts', methods=['POST'])
