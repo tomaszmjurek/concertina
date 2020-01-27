@@ -25,29 +25,35 @@
                 Concertina
             </div>
 
-            <a href="{{ url_for('concerts.concerts') }}">
-                <div class="nav-elem"> Concerts </div>
-             </a>
+            <div id="sidenav-items">
+                <a href="{{ url_for('concerts.concerts') }}">
+                    <div class="nav-elem"> Concerts </div>
+                 </a>
 
-            <a href="{{ url_for('festivals.festivals') }}">
-                <div class="nav-elem"> Festivals </div>
-            </a>
+                <a href="{{ url_for('festivals.festivals') }}">
+                    <div class="nav-elem"> Festivals </div>
+                </a>
 
-            <a href="{{ url_for('bands.bands') }}">
-                <div class="nav-elem"> Bands </div>
-            </a>
+                <a href="{{ url_for('bands.bands') }}">
+                    <div class="nav-elem"> Bands </div>
+                </a>
 
-            <a href="{{ url_for('albums.albums') }}">
-                <div class="nav-elem"> Albums </div>
-            </a>
+                <a href="{{ url_for('albums.albums') }}">
+                    <div class="nav-elem"> Albums </div>
+                </a>
 
-            <a href="{{ url_for('musicians.musicians') }}">
-                <div class="nav-elem"> Musicians </div>
-            </a>
+                <a href="{{ url_for('musicians.musicians') }}">
+                    <div class="nav-elem"> Musicians </div>
+                </a>
 
-            <a href="{{ url_for('instruments.instruments') }}">
-                <div class="nav-elem">Instruments</div>
-            </a>
+                <a href="{{ url_for('instruments.instruments') }}">
+                    <div class="nav-elem">Instruments</div>
+                </a>
+
+                <a href="{{ url_for('places.places') }}">
+                    <div class="nav-elem">Places</div>
+                </a>
+            </div>
 
             <div id="add_new" class="nav-elem"> Add new form </div>
             {% block form %} {% endblock %}

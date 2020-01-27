@@ -61,6 +61,9 @@ def instruments_create():
 
 @instruments_bp.route('/instruments/delete/<string:type>')
 def instruments_delete(type):
-    cursor.execute('DELETE FROM instruments WHERE type = %s::TEXT', (type, ))
-    flash('Instrument deleted sucessfully!')
+    try:
+        cursor.execute('DELETE FROM instruments WHERE type = %s::TEXT', (type, ))
+        flash('Instrument deleted sucessfully!')
+    except:
+        flash('Some musicians are still playing this instrument!')
     return redirect(url_for('instruments.instruments'))

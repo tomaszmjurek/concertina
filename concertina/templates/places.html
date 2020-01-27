@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Festivals {% endblock %}
+
+{%block content %}
+
+<div container>
+    <div id="concerts" style="display: inline-flex">
+        <h1>Incoming festivals</h1>
+    </div>
+    <div style="display: inline-flex; float: right; padding-top: 7px">
+        <form action="/places_search" method="post">
+            {{ query_form.csrf_token }}
+            {{ query_form.query }}
+            <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>
+        </form>
+    </div>
+
+    <table class="table">
+        <tbody>
+        {% for place in places %}
+            <tr>
+                <th scope="row">{{ loop.counter }}</th>
+                <td>{{ place.name }}</td>
+                <td>{{ place.city }} / {{ place.street }}</td>
+                <td>
+                    <a href="{{ url_for('places.places_delete', id_place=place.id_place) }}">
+                        <button class="my-button delete-button" type="button">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block form %}
+    <div class="add_new_form">
+        <form action="/places" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.name.label.text }} </br>
+        {{ form.name }}
+        </div>
+
+        <div>{{ form.city.label.text }} </br>
+        {{ form.city }}
+        </div>
+
+        <div>{{ form.street.label.text }} </br>
+        {{ form.street }}
+        </div>
+
+        <div>{{ form.to_edit.label.text }} </br>
+        {{  form.to_edit }}
+        </div>
+
+        <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
+
+        </form>
+    </div>
+{% endblock %}

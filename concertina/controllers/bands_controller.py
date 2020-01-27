@@ -72,6 +72,9 @@ def bands_add():
 
 @bands_bp.route('/bands/delete/<string:name>')
 def band_delete(name):
-    cursor.execute("DELETE FROM bands WHERE name = %s::TEXT", [name])
-    flash("Band deleted successfully!")
+    try:
+        cursor.execute("DELETE FROM bands WHERE name = %s::TEXT", [name])
+        flash("Band deleted successfully!")
+    except:
+        flash("Can't delete this band because it's not empty!")
     return redirect(url_for('bands.bands'))

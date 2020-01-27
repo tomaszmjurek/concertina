@@ -39,7 +39,6 @@ def festivals_search():
     return redirect(url_for('festivals.festivals', query=query))
 
 
-
 @festivals_bp.route('/festivals', methods=['POST'])
 def festivals_add():
     form = FestivalForm()
