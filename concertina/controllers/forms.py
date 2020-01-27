@@ -78,3 +78,9 @@ class GenreForm(FlaskForm):
     supergenre = SelectField('Supergenre', choices=[])
     to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')
+
+
+class AwardForm(FlaskForm):
+    name = StringField('Name')
+    to_edit = SelectField('Id/Name to edit')
+    submit = SubmitField('Add / Edit')
