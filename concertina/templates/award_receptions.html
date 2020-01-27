@@ -6,7 +6,7 @@
 
 <div container>
     <div id="award_receptions" style="display: inline-flex">
-        <h1>Award {{ award_name }} albums </h1>
+        <h1>Albums having {{ award_name }} </h1>
     </div>
     <div style="display: inline-flex; float: right; padding-top: 7px">
         <form action="/award_receptions_search" method="post">
@@ -31,7 +31,7 @@
                 <td>{{ award_album.band }}</td>
                 <td>{{ award_album.genre }}</td>
                 <td>
-                    <a href="{{ url_for('award_receptions.award_album_delete', id_award_album=award_album.id_award_album) }}">
+                    <a href="{{ url_for('award_receptions.award_reception_delete', award=award_album.award, id_album=award_album.id_album) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>
                 </td>

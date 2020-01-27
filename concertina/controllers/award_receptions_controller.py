@@ -9,6 +9,7 @@ award_receptions_bp = Blueprint('award_receptions', __name__)
 
 
 @award_receptions_bp.route('/award_receptions/<string:award>')
+@award_receptions_bp.route('/award_receptions/<string:award>/<string:query>')
 def award_receptions(award=None, query=None):
 
     cursor.execute("SELECT * FROM albums al JOIN award_receptions a ON a.id_album = al.id_album "
@@ -24,11 +25,6 @@ def award_receptions(award=None, query=None):
     cursor.execute("SELECT * FROM albums")
     albums = cursor.fetchall()
     form.album.choices = Options.BLANK + sorted([(album['name'], album['name']) for album in albums], key=lambda x: x[1])
-
-    # cursor.execute("SELECT name, band FROM albums WHERE id_album = %s::INTEGER", [id_album])
-    # album_info = cursor.fetchone()
-
-    # form.to_edit.choices = Options.EMPTY + sorted([(x['name'], x['position']) for x in my_award_receptions], key=lambda x: x[1])
 
     return render_template('award_receptions.html', my_award_receptions=awards_albums, query_form=query_form, form=form, award_name=award)
 
@@ -47,24 +43,24 @@ def award_receptions_add(award):
     form = AwardReceptionForm()
     album = form.album.data
 
-    cursor.execute("SELECT id_album FROM albums WHERE name = %s::TEXT", [album])
+    cursor.execute("SELECT id_album FROM albums WHERE name = %s::TEXT", (album,))
     id_album = cursor.fetchone()
 
     try:
         cursor.execute("INSERT INTO award_receptions(id_album, award)"
-                       "VALUES(%s::INTEGER, %S::TEXT)", (id_album["id_album"], award))
-
+                       "VALUES(%s::INTEGER, %s::TEXT)", (id_album["id_album"], award))
     except psycopg2.IntegrityError as e:
-            flash('That album already has the award!')
+        flash('That album already has the award!')
     except Exception as e:
-            flash(Options.fields_not_set)
+        flash(Options.fields_not_set)
 
     return redirect(url_for('award_receptions.award_receptions', award=award))
 
 
-@award_receptions_bp.route('/award_receptions/delete/<int:id_award_reception>/<int:id_album>')
-def award_reception_delete(id_award_reception, id_album):
-    #
-    # cursor.execute("DELETE FROM award_receptions WHERE id_award_reception = %s::INTEGER", [id_award_reception])
-    # flash("award_reception deleted successfully!")
-    return redirect(url_for('award_receptions.award_receptions', id_album=id_album))
+@award_receptions_bp.route('/award_receptions/delete/<string:award>/<int:id_album>')
+def award_reception_delete(award, id_album):
+
+    cursor.execute("DELETE FROM award_receptions WHERE award = %s::TEXT AND "
+                   "id_album = %s::INTEGER", (award, id_album))
+    flash("award_reception deleted successfully!")
+    return redirect(url_for('award_receptions.award_receptions', award=award))
