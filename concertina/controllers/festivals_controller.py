@@ -49,7 +49,7 @@ def festivals_add():
 
     if not is_set(to_edit):
         try:
-            cursor.execute("INSERT INTO festivals(name, date_start, id_place)"
+            cursor.execute("INSERT INTO festivals(festival_name, date_start, id_place)"
                            "VALUES (%s::TEXT, %s::DATE, %s::INTEGER)",
                            (name, date_start, int(id_place)))
         except psycopg2.IntegrityError as e:
@@ -58,7 +58,7 @@ def festivals_add():
     else:
         try:
             if is_set(name):
-                cursor.execute('UPDATE FESTIVALS SET name = %s::TEXT WHERE ID_FESTIVAL = %s::INTEGER', (name, to_edit))
+                cursor.execute('UPDATE FESTIVALS SET festival_name = %s::TEXT WHERE ID_FESTIVAL = %s::INTEGER', (name, to_edit))
             if is_set(id_place):
                 cursor.execute('UPDATE FESTIVALS SET id_place = %s::INTEGER WHERE ID_FESTIVAL = %s::INTEGER',
                                (int(id_place), to_edit))

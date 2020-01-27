@@ -26,11 +26,11 @@ def appearances(id_festival=None, query=None):
     bands = cursor.fetchall()
     form.band.choices = Options.BLANK + sorted([(band['name'], band['name']) for band in bands], key=lambda x: x[1])
 
-    cursor.execute("SELECT name FROM festivals WHERE id_festival = %s::INTEGER", [id_festival])
+    cursor.execute("SELECT festival_name FROM festivals WHERE id_festival = %s::INTEGER", [id_festival])
     festival = cursor.fetchone()
 
     return render_template('appearances.html', my_bands=my_bands, query_form=query_form, form=form,
-                           id_festival=id_festival, festival_name=festival['name'])
+                           id_festival=id_festival, festival_name=festival['festival_name'])
 
 
 @appearances_bp.route('/appearances_search/<int:id_festival>', methods=['POST'])

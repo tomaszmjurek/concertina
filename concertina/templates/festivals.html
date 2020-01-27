@@ -20,7 +20,7 @@
         <tbody>
         <tr style="color: darkorange">
             <th></th>
-            <td> ID </td>
+            <td> Name </td>
             <td> Date start </td>
             <td> Place / City </td>
         </tr>
@@ -28,7 +28,7 @@
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
                 <td>
-                    <a href="{{ url_for('appearances.appearances', id_festival=festival.id_festival)}}"> {{ festival.id_festival }} </a>
+                    <a href="{{ url_for('appearances.appearances', id_festival=festival.id_festival)}}"> {{ festival.festival_name }} </a>
                 </td>
                 <td>{{ festival.date_start}}</td>
                 <td>{{ festival.name }} / {{ festival.city }}</td>
