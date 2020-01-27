@@ -25,6 +25,7 @@ class MusicianForm(FlaskForm):
     name = StringField('Name')
     band = SelectField('Band', choices=[], validators=[DataRequired()])
     instrument = SelectField('Instrument', choices=[], validators=[DataRequired()])
+    nationality = StringField('Nationality')
     to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')
 

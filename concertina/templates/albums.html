@@ -18,6 +18,12 @@
 
     <table class="table">
         <tbody>
+        <tr style="color: darkorange">
+            <th></th>
+            <td> Name </td>
+            <td> Band </td>
+            <td> Genre </td>
+        </tr>
         {% for album in my_albums %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>

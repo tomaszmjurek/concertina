@@ -18,6 +18,14 @@
 
     <table class="table">
         <tbody>
+        <tr style="color: darkorange">
+            <th></th>
+            <td> ID </td>
+            <td> Concert date </td>
+            <td> Band </td>
+            <td> Place / City </td>
+            <td> Tour </td>
+        </tr>
         {% for concert in incoming %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>

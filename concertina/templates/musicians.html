@@ -18,12 +18,20 @@
 
     <table class="table">
         <tbody>
+        <tr style="color: darkorange">
+            <th></th>
+            <td> Name </td>
+            <td> Instrument </td>
+            <td> Band </td>
+            <td> Nationality </td>
+        </tr>
         {% for musician in my_musicians %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
                 <td>{{ musician.name}}</td>
                 <td>{{ musician.instrument }}</td>
                 <td>{{ musician.band }}</td>
+                {% if musician.nationality %} <td>{{ musician.nationality }}</td> {% else %} <td></td> {% endif %}
                 <td>
                     <a href="{{ url_for('musicians.musician_delete', name=musician.name) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
@@ -51,6 +59,10 @@
 
         <div>{{ form.instrument.label.text }} </br>
         {{ form.instrument }}
+        </div>
+
+        <div>{{ form.nationality.label.text }} </br>
+        {{ form.nationality }}
         </div>
 
         <div>{{ form.to_edit.label.text }} </br>

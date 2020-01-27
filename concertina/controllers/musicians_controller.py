@@ -47,6 +47,7 @@ def musicians_add():
     form = MusicianForm()
     name = form.name.data
     band = form.band.data
+    nationality = form.nationality.data
     instrument = form.instrument.data
     to_edit = form.to_edit.data
 
@@ -55,6 +56,8 @@ def musicians_add():
             cursor.execute("INSERT INTO musicians(name, band, instrument)"
                             "VALUES(%s::TEXT, %s::TEXT, %s::TEXT)",
                             (name, band, instrument))
+            if is_set(nationality):
+                cursor.execute('UPDATE MUSICIANS SET nationality = %s::TEXT WHERE name= %s::TEXT', (nationality, name))
         except psycopg2.IntegrityError as e:
             flash('Such a musician already exists!')
         except Exception as e:
@@ -67,6 +70,8 @@ def musicians_add():
                 cursor.execute('UPDATE MUSICIANS SET band = %s::TEXT WHERE name= %s::TEXT', (band, to_edit))
             if is_set(instrument):
                 cursor.execute('UPDATE MUSICIANS SET instrument = %s::TEXT WHERE name= %s::TEXT', (instrument, to_edit))
+            if is_set(nationality):
+                cursor.execute('UPDATE MUSICIANS SET nationality = %s::TEXT WHERE name= %s::TEXT', (nationality, to_edit))
 
         except psycopg2.IntegrityError as e:
             flash('Such a musician already exists!')
