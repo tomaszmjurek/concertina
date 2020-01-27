@@ -89,3 +89,9 @@ CALL PlanConcert('Casiopea',
                 'U Bazyla', 'Poznan',
                 CAST(CURRENT_DATE + INTERVAL '8' DAY AS DATE));
 
+INSERT INTO awards(name)
+    VALUES ('Platinum record'),
+           ('Gold Record');
+
+
+

@@ -56,9 +56,12 @@ def albums_add():
 
     if not is_set(to_edit):
         try:
-            cursor.execute("INSERT INTO albums(band, name, genre)"
-                           "VALUES(%s::TEXT, %s::TEXT, %s::TEXT)",
-                           (band, name, genre))
+            cursor.execute("INSERT INTO albums(band, name)"
+                           "VALUES(%s::TEXT, %s::TEXT)",
+                           (band, name))
+            if is_set(genre):
+                cursor.execute('UPDATE albums SET genre = %s::TEXT WHERE band = %s::TEXT'
+                               'AND name = %s::TEXT', (genre, band, name))
         except psycopg2.IntegrityError as e:
             flash('Such album already exists!')
         except Exception as e:
