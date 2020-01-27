@@ -8,6 +8,7 @@ from concertina.controllers.albums_controller import albums_bp
 from concertina.controllers.places_controller import places_bp
 from concertina.controllers.songs_controller import songs_bp
 from concertina.controllers.awards_controller import awards_bp
+from concertina.controllers.award_receptions_controller import award_receptions_bp
 
 
 def init_blueprints(app):
@@ -21,3 +22,4 @@ def init_blueprints(app):
     app.register_blueprint(places_bp)
     app.register_blueprint(genres_bp)
     app.register_blueprint(awards_bp)
+    app.register_blueprint(award_receptions_bp)

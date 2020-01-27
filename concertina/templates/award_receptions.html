@@ -1,36 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %} Awards {% endblock %}
+{% block title %} Award receptions {% endblock %}
 
 {%block content %}
 
 <div container>
-    <div id="awards" style="display: inline-flex">
-        <h1>Awards</h1>
+    <div id="award_receptions" style="display: inline-flex">
+        <h1>Award {{ award_name }} albums </h1>
     </div>
-
     <div style="display: inline-flex; float: right; padding-top: 7px">
-        <form action="/awards_search" method="post">
+        <form action="/award_receptions_search" method="post">
             {{ query_form.csrf_token }}
             {{ query_form.query }}
             <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>
         </form>
     </div>
-
+/
     <table class="table">
         <tbody>
         <tr style="color: darkorange">
             <th></th>
             <td> Name </td>
+            <td> Band </td>
+            <td> Genre </td>
         </tr>
-        {% for award in awards%}
+        {% for award_album in my_award_receptions %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
+                <td> {{ award_album.name }} </td>
+                <td>{{ award_album.band }}</td>
+                <td>{{ award_album.genre }}</td>
                 <td>
-                    <a href="{{ url_for('award_receptions.award_receptions', award=award.name)}}"> {{ award.name }} </a>
-                </td>
-                <td>
-                    <a href="{{ url_for('awards.award_delete', name=award.name) }}">
+                    <a href="{{ url_for('award_receptions.award_album_delete', id_award_album=award_album.id_award_album) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>
                 </td>
@@ -43,15 +44,11 @@
 
 {% block form %}
     <div class="add_new_form">
-        <form action="/awards" method="post" novalidate>
+        <form action="/award_receptions/{{ award_name }}" method="post" novalidate>
         {{ form.csrf_token }}
 
-        <div>{{ form.name.label.text }} </br>
-        {{ form.name }}
-        </div>
-
-         <div>{{ form.to_edit.label.text }} </br>
-        {{ form.to_edit }}
+        <div>{{ form.album.label.text }} </br>
+        {{ form.album }}
         </div>
 
         <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>

@@ -84,3 +84,8 @@ class AwardForm(FlaskForm):
     name = StringField('Name')
     to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')
+
+
+class AwardReceptionForm(FlaskForm):
+    album = SelectField('Album', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Add')
