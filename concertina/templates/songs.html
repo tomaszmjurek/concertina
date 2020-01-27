@@ -17,7 +17,6 @@
                 <td>{{ song.position}}</td>
                 <td>{{ song.name }}</td>
                 <td>
-                    <button class="my-button see_more" type="button">More</button>
                     <a href="{{ url_for('songs.song_delete', id_song=song.id_song, id_album=song.id_album) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>

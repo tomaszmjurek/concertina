@@ -24,11 +24,9 @@
                 <td>
                     <a href="{{ url_for('songs.songs', id_album=album.id_album)}}"> {{ album.name }} </a>
                 </td>
-                <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ album.band }}</td>
                 <td>{{ album.genre }}</td>
                 <td>
-                    <button class="my-button see_more" type="button">More</button>
                     <a href="{{ url_for('albums.album_delete', id_album=album.id_album) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>

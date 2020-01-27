@@ -25,7 +25,6 @@
                 <td>{{ musician.instrument }}</td>
                 <td>{{ musician.band }}</td>
                 <td>
-                    <button class="my-button see_more" type="button">More</button>
                     <a href="{{ url_for('musicians.musician_delete', name=musician.name) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>

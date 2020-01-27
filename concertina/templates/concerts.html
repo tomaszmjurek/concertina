@@ -23,11 +23,9 @@
                 <th scope="row">{{ loop.counter }}</th>
                 <td>{{ concert.id_concert }}</td>
                 <td>{{ concert.concert_date}}</td>
-                <td><img src="https://picsum.photos/100/50"></img></td>
                 <td>{{ concert.band }}</td>
                 <td>{{ concert.name }} / {{ concert.city }}</td>
                 <td>
-                    <button class="my-button see_more" type="button">Buy Ticket</button>
                     <a href="{{ url_for('concerts.concert_delete', id_concert=concert.id_concert) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
                     </a>
