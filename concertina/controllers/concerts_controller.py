@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, redirect, url_for, flash
 
 from concertina.app import cursor
-from concertina.controllers.forms import ConcertForm, QueryForm
+from concertina.controllers.forms import ConcertForm, ConcertsQueryForm
 import psycopg2
 
 from concertina.utils import *
@@ -16,15 +16,18 @@ def homepage():
 
 
 @concerts_bp.route('/concerts')
-@concerts_bp.route('/concerts/<string:query>')
-def concerts(query=None):
-    cursor.execute("SELECT * FROM getConcertsByDate() NATURAL JOIN PLACES ORDER BY concert_date DESC")
+@concerts_bp.route('/concerts/<string:query>/<int:days>')
+def concerts(days=None, query=None):
+    days = days or 30
+    query = None if query == 'none' else query
+    cursor.execute("SELECT * FROM getConcertsByDate(days_number := %s::INTEGER) NATURAL JOIN PLACES "
+                   "ORDER BY concert_date DESC", (days,))
     incoming = cursor.fetchall()
     if query:
         incoming = filter_by_query(incoming, query)
 
     form = ConcertForm()
-    query_form = QueryForm()
+    query_form = ConcertsQueryForm()
 
     cursor.execute("SELECT * FROM bands")
     bands = cursor.fetchall()
@@ -42,12 +45,12 @@ def concerts(query=None):
 
 @concerts_bp.route('/concerts_search', methods=['POST'])
 def concerts_search():
-    form = QueryForm()
+    form = ConcertsQueryForm()
     query = form.query.data
+    days = form.days.data or 30
     if not is_set(query):
-        query = None
-    return redirect(url_for('concerts.concerts', query=query))
-
+        query = 'none'
+    return redirect(url_for('concerts.concerts', query=query, days=days))
 
 
 @concerts_bp.route('/concerts', methods=['POST'])
