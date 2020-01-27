@@ -20,6 +20,8 @@ def instruments(query=None):
     query_form = QueryForm()
     form = InstrumentForm()
 
+    form.to_edit.choices = Options.EMPTY + [(x['type'], x['type']) for x in instruments]
+
     return render_template('instruments.html', instruments=instruments, form=form, query_form=query_form)
 
 
@@ -36,12 +38,23 @@ def instruments_search():
 def instruments_create():
     form = InstrumentForm()
     type = form.type.data
-    try:
-        cursor.execute("INSERT INTO instruments(type) VALUES(%s::TEXT)", (type, ))
-    except psycopg2.IntegrityError as e:
-        flash('Such an instrument already exists!')
-    except Exception as e:
-        flash('Some required fields were not set!')
+    to_edit = form.to_edit.data
+
+    if not is_set(to_edit):
+        try:
+            cursor.execute("INSERT INTO instruments(type) VALUES(%s::TEXT)", (type, ))
+        except psycopg2.IntegrityError as e:
+            flash('Such an instrument already exists!')
+        except Exception as e:
+            flash('Some required fields were not set!')
+    else:
+        try:
+            if is_set(type):
+                cursor.execute('UPDATE instruments SET type = %s::TEXT WHERE type= %s::TEXT', (type, to_edit))
+        except psycopg2.IntegrityError as e:
+            flash('Such an instrument already exists!')
+        except Exception as e:
+            flash('Modification was not possible!')
 
     return redirect(url_for('instruments.instruments'))
 
