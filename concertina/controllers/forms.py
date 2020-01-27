@@ -53,7 +53,7 @@ class SongForm(FlaskForm):
 
 
 class InstrumentForm(FlaskForm):
-    type = StringField('Type')
+    type = StringField('Instrument type')
     submit = SubmitField('Add / Edit')
 
 
