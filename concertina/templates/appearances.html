@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %} Bands {% endblock %}
+
+{%block content %}
+
+<div container>
+    <div id="bands" style="display: inline-flex">
+        <h1>Bands playing at {{ id_festival }}</h1>
+    </div>
+    <div style="display: inline-flex; float: right; padding-top: 7px">
+        <form action="/appearances_search" method="post">
+            {{ query_form.csrf_token }}
+            {{ query_form.query }}
+            <div style="display: inline-flex" class="submit-button">{{ query_form.submit(class_="submit-button") }}</div>
+        </form>
+    </div>
+
+    <table class="table">
+        <tbody>
+        <tr style="color: darkorange">
+            <th></th>
+            <td> Name </td>
+            <td> Formation date </td>
+        </tr>
+        {% for band in my_bands %}
+            <tr>
+                <th scope="row">{{ loop.counter }}</th>
+                <td>{{ band.name }}</td>
+                {% if band.formation_date %} <td>{{ band.formation_date }}</td> {% else %}<td></td> {% endif %}
+                <td>
+                    <a href="{{ url_for('appearances.appearance_delete', band=band.name, id_festival=id_festival) }}">
+                        <button class="my-button delete-button" type="button">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block form %}
+    <div class="add_new_form">
+        <form action="/appearances/{{id_festival}}" method="post" novalidate>
+        {{ form.csrf_token }}
+
+        <div>{{ form.band.label.text }} </br>
+        {{ form.band }}
+        </div>
+
+        <div class="submit-button">{{ form.submit(class_="submit-button") }}</div>
+
+        </form>
+    </div>
+{% endblock %}
