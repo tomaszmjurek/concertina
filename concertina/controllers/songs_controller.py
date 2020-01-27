@@ -18,7 +18,7 @@ def songs(id_album):
 
     form = SongForm()
 
-    form.to_edit.choices = Options.EMPTY + sorted([(x['name'], x['name']) for x in my_songs], key=lambda x: x[1])
+    form.to_edit.choices = Options.EMPTY + sorted([(x['name'], x['position']) for x in my_songs], key=lambda x: x[1])
 
     return render_template('songs.html', my_songs=my_songs, id_album=id_album,
                            album_name=album_info['name'], band=album_info['band'], form=form)
@@ -28,13 +28,17 @@ def songs(id_album):
 def songs_add(id_album):
     form = SongForm()
     name = form.name.data
+    position = form.position.data
+    length = form.length.data
     to_edit = form.to_edit.data
 
     if not is_set(to_edit):
         try:
-            cursor.execute("INSERT INTO songs(name, id_album)"
-                           "VALUES(%s::TEXT, %s::INTEGER)",
-                            (name, id_album))
+            cursor.execute("INSERT INTO songs(name, id_album, position)"
+                           "VALUES(%s::TEXT, %s::INTEGER, %s::INTEGER)",
+                            (name, id_album, position))
+            if is_set(length):
+                cursor.execute('UPDATE SONGS SET length = %s::INTEGER WHERE name= %s::TEXT', (length, name))
         except psycopg2.IntegrityError as e:
             flash('Such a song already exists!')
         except Exception as e:
@@ -43,6 +47,10 @@ def songs_add(id_album):
         try:
             if is_set(name):
                 cursor.execute('UPDATE SONGS SET name = %s::TEXT WHERE name= %s::TEXT', (name, to_edit))
+            if is_set(position):
+                cursor.execute('UPDATE SONGS SET position = %s::INTEGER WHERE name= %s::TEXT', (position, to_edit))
+            if is_set(length):
+                cursor.execute('UPDATE SONGS SET length = %s::INTEGER WHERE name= %s::TEXT', (length, to_edit))
 
         except psycopg2.IntegrityError as e:
             flash('Such a song already exists!')

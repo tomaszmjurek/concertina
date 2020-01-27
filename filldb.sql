@@ -28,18 +28,18 @@ INSERT INTO musicians(name, band, instrument)
 INSERT INTO albums(band, name, genre)
     VALUES ('The Rolling Stones', 'Blue and Lonesome', 'Blues');
 
-CALL AddSong('Blue and Lonesome', 'Just Your Fool');
-CALL AddSong('Blue and Lonesome', 'Commit a Crime');
-CALL AddSong('Blue and Lonesome', 'Blue and Lonesome');
-CALL AddSong('Blue and Lonesome', 'All of Your Love');
-CALL AddSong('Blue and Lonesome', 'I Gotta Go');
-CALL AddSong('Blue and Lonesome', 'Everybody Knows About My Good Thing');
-CALL AddSong('Blue and Lonesome', 'RideEm on Down');
-CALL AddSong('Blue and Lonesome', 'Hate To See You Ho');
-CALL AddSong('Blue and Lonesome', 'Hoo Doo Blues');
-CALL AddSong('Blue and Lonesome', 'Little Rain');
-CALL AddSong('Blue and Lonesome', 'Just Like I Treat You');
-CALL AddSong('Blue and Lonesome', 'I Cant Quit You Baby');
+CALL AddSong('Blue and Lonesome', 'Just Your Fool', 1);
+CALL AddSong('Blue and Lonesome', 'Commit a Crime', 2);
+CALL AddSong('Blue and Lonesome', 'Blue and Lonesome', 3);
+CALL AddSong('Blue and Lonesome', 'All of Your Love', 4);
+CALL AddSong('Blue and Lonesome', 'I Gotta Go', 5);
+CALL AddSong('Blue and Lonesome', 'Everybody Knows About My Good Thing', 6);
+CALL AddSong('Blue and Lonesome', 'RideEm on Down', 7);
+CALL AddSong('Blue and Lonesome', 'Hate To See You Ho', 8);
+CALL AddSong('Blue and Lonesome', 'Hoo Doo Blues', 9);
+CALL AddSong('Blue and Lonesome', 'Little Rain', 10);
+CALL AddSong('Blue and Lonesome', 'Just Like I Treat You', 11);
+CALL AddSong('Blue and Lonesome', 'I Cant Quit You Baby', 12);
 
 -- Casiopea
 

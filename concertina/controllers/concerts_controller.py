@@ -61,9 +61,13 @@ def concerts_add():
 
     if not is_set(to_edit):
         try:
-            cursor.execute("INSERT INTO concerts(band, concert_date, tour, id_place)"
-                            "VALUES(%s::TEXT, %s::DATE, %s::TEXT, %s::INTEGER)",
-                            (band, concert_date, tour, int(id_place)))
+            cursor.execute("INSERT INTO concerts(band, concert_date, id_place)"
+                            "VALUES(%s::TEXT, %s::DATE, %s::INTEGER)",
+                            (band, concert_date, int(id_place)))
+            if is_set(tour):
+                cursor.execute('UPDATE CONCERTS SET tour = %s::TEXT'
+                               ' WHERE band = %s::TEXT AND concert_date = %s::DATE AND id_place = %s::INTEGER',
+                               (tour, band, concert_date, int(id_place)))
         except psycopg2.IntegrityError as e:
             flash('Such a concert already exists!')
         except Exception as e:

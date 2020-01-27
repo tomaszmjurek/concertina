@@ -49,9 +49,11 @@ def bands_add():
 
     if not is_set(to_edit):
         try:
-            cursor.execute("INSERT INTO bands(name, formation_date)"
-                           "VALUES(%s::TEXT, %s::DATE)",
-                           (name, formation_date))
+            cursor.execute("INSERT INTO bands(name)"
+                           "VALUES(%s::TEXT)",
+                           (name, ))
+            if is_set(formation_date):
+                cursor.execute('UPDATE BANDS SET formation_date = %s::DATE WHERE name= %s::TEXT', (formation_date, name))
         except psycopg2.IntegrityError as e:
            flash('Such a band already exists!')
         except Exception as e:

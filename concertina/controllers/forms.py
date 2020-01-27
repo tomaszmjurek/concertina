@@ -16,7 +16,7 @@ class ConcertForm(FlaskForm):
 
 class BandForm(FlaskForm):
     name = StringField('Name')
-    formation_date = DateField('Formation date', default=date.today())
+    formation_date = DateField('Formation date', default=None)
     to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')
 
@@ -48,6 +48,8 @@ class AlbumForm(FlaskForm):
 
 class SongForm(FlaskForm):
     name = StringField('Name')
+    position = IntegerField('Position')
+    length = IntegerField('Length [s]')
     to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')
 

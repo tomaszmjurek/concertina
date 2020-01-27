@@ -27,7 +27,7 @@
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
                 <td>{{ band.name }}</td>
-                <td>{{ band.formation_date }}</td>
+                {% if band.formation_date %} <td>{{ band.formation_date }}</td> {% else %}<td></td> {% endif %}
                 <td>
                     <a href="{{ url_for('bands.band_delete', name=band.name) }}">
                         <button class="my-button delete-button" type="button">Delete</button>
