@@ -27,7 +27,9 @@
         {% for festival in incoming %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
-                <td>{{ festival.id_festival }}</td>
+                <td>
+                    <a href="{{ url_for('appearances.appearances', id_festival=festival.id_festival)}}"> {{ festival.id_festival }} </a>
+                </td>
                 <td>{{ festival.date_start}}</td>
                 <td>{{ festival.name }} / {{ festival.city }}</td>
                 <td>

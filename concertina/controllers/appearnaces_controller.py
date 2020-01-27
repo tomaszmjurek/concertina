@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint, redirect, url_for, flash
 from concertina.app import cursor
-from concertina.controllers.forms import AwardReceptionForm, QueryForm
+from concertina.controllers.forms import AppearanceForm, QueryForm
 import psycopg2
 
 from concertina.utils import *

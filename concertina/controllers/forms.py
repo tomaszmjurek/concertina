@@ -89,3 +89,8 @@ class AwardForm(FlaskForm):
 class AwardReceptionForm(FlaskForm):
     album = SelectField('Album', choices=[], validators=[DataRequired()])
     submit = SubmitField('Add')
+
+
+class AppearanceForm(FlaskForm):
+    band = SelectField('Band', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Add')
