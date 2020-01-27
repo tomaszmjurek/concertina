@@ -46,6 +46,9 @@ def musicians_search():
 def musicians_add():
     form = MusicianForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('musicians.musicians'))
     band = form.band.data
     nationality = form.nationality.data
     instrument = form.instrument.data

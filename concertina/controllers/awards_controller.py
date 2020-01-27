@@ -38,6 +38,9 @@ def awards_search():
 def awards_add():
     form = AwardForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('awards.awards'))
     to_edit = form.to_edit.data
 
     if not is_set(to_edit):

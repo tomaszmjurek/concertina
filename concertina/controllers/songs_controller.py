@@ -28,6 +28,9 @@ def songs(id_album):
 def songs_add(id_album):
     form = SongForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('songs.songs'))
     position = form.position.data
     length = form.length.data
     to_edit = form.to_edit.data

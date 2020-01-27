@@ -15,7 +15,7 @@ class ConcertForm(FlaskForm):
 
 
 class BandForm(FlaskForm):
-    name = StringField('Name')
+    name = StringField('Name', validators=[DataRequired()])
     formation_date = DateField('Formation date', default=None)
     to_edit = SelectField('Id/Name to edit')
     submit = SubmitField('Add / Edit')

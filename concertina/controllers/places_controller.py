@@ -39,6 +39,9 @@ def places_create():
     form = PlaceForm()
     name = form.name.data
     city = form.city.data
+    if not is_set(name) or not is_set(city):
+        flash('Name and city cannot be empty!')
+        return redirect(url_for('places.places'))
     street = form.street.data
     to_edit = form.to_edit.data
 

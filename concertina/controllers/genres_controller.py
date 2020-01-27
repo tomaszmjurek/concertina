@@ -39,6 +39,9 @@ def genres_search():
 def genres_create():
     form = GenreForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('genres.genres'))
     supergenre = form.supergenre.data
     to_edit = form.to_edit.data
 

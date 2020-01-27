@@ -43,6 +43,9 @@ def festivals_search():
 def festivals_add():
     form = FestivalForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('festivals.festivals'))
     id_place = form.place.data
     date_start = form.date_start.data
     to_edit = form.to_edit.data

@@ -44,6 +44,9 @@ def bands_search():
 def bands_add():
     form = BandForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('bands.bands'))
     formation_date = form.formation_date.data
     to_edit = form.to_edit.data
 

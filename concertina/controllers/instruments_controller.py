@@ -38,6 +38,9 @@ def instruments_search():
 def instruments_create():
     form = InstrumentForm()
     type = form.type.data
+    if not is_set(type):
+        flash('Type cannot be empty!')
+        return redirect(url_for('instruments.instruments'))
     to_edit = form.to_edit.data
 
     if not is_set(to_edit):

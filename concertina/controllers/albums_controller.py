@@ -50,6 +50,9 @@ def albums_search():
 def albums_add():
     form = AlbumForm()
     name = form.name.data
+    if not is_set(name):
+        flash('Name cannot be empty!')
+        return redirect(url_for('albums.albums'))
     band = form.band.data
     genre = form.genre.data
     to_edit = form.to_edit.data
