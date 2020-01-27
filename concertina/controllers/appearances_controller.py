@@ -26,16 +26,20 @@ def appearances(id_festival=None, query=None):
     bands = cursor.fetchall()
     form.band.choices = Options.BLANK + sorted([(band['name'], band['name']) for band in bands], key=lambda x: x[1])
 
-    return render_template('appearances.html', my_bands=my_bands, query_form=query_form, form=form, id_festival=id_festival)
+    cursor.execute("SELECT name FROM festivals WHERE id_festival = %s::INTEGER", [id_festival])
+    festival = cursor.fetchone()
+
+    return render_template('appearances.html', my_bands=my_bands, query_form=query_form, form=form,
+                           id_festival=id_festival, festival_name=festival['name'])
 
 
-@appearances_bp.route('/appearances_search', methods=['POST'])
-def appearances_search():
+@appearances_bp.route('/appearances_search/<int:id_festival>', methods=['POST'])
+def appearances_search(id_festival):
     form = QueryForm()
     query = form.query.data
     if not is_set(query):
         query = None
-    return redirect(url_for('appearances.appearances', query=query))
+    return redirect(url_for('appearances.appearances', id_festival=id_festival, query=query))
 
 
 @appearances_bp.route('/appearances/<int:id_festival>', methods=['POST'])
