@@ -44,11 +44,11 @@ def bands_search():
 def bands_add():
     form = BandForm()
     name = form.name.data
-    if not is_set(name):
+    to_edit = form.to_edit.data
+    if not is_set(name) and not is_set(to_edit):
         flash('Name cannot be empty!')
         return redirect(url_for('bands.bands'))
     formation_date = form.formation_date.data
-    to_edit = form.to_edit.data
 
     if not is_set(to_edit):
         try:

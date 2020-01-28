@@ -39,11 +39,11 @@ def genres_search():
 def genres_create():
     form = GenreForm()
     name = form.name.data
-    if not is_set(name):
+    to_edit = form.to_edit.data
+    if not is_set(name) and not is_set(to_edit):
         flash('Name cannot be empty!')
         return redirect(url_for('genres.genres'))
     supergenre = form.supergenre.data
-    to_edit = form.to_edit.data
 
     if not is_set(to_edit):
         try:
@@ -74,7 +74,7 @@ def genres_create():
 def genres_delete(name):
     try:
         cursor.execute('DELETE FROM genres WHERE name = %s::TEXT', (name, ))
-        flash('Instrument deleted sucessfully!')
+        flash('Genre deleted sucessfully!')
     except:
         flash('Some albums are of this genre!')
     return redirect(url_for('genres.genres'))

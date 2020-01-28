@@ -21,7 +21,6 @@
         <tbody>
         <tr style="color: darkorange">
             <th></th>
-            <td> ID </td>
             <td> Concert date </td>
             <td> Band </td>
             <td> Place / City </td>
@@ -30,7 +29,6 @@
         {% for concert in incoming %}
             <tr>
                 <th scope="row">{{ loop.counter }}</th>
-                <td>{{ concert.id_concert }}</td>
                 <td>{{ concert.concert_date}}</td>
                 <td>{{ concert.band }}</td>
                 <td>{{ concert.name }} / {{ concert.city }}</td>

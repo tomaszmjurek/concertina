@@ -59,11 +59,20 @@ def concerts_search():
 @concerts_bp.route('/concerts', methods=['POST'])
 def concerts_add():
     form = ConcertForm()
-    band = form.band.data
-    id_place = form.place.data
-    concert_date = form.concert_date.data
-    tour = form.tour.data
     to_edit = form.to_edit.data
+    band = form.band.data
+    if not is_set(band) and not is_set(to_edit):
+        flash('Band cannot be empty!')
+        return redirect(url_for('concerts.concerts'))
+    id_place = form.place.data
+    if not is_set(id_place) and not is_set(to_edit):
+        flash('Place cannot be empty!')
+        return redirect(url_for('concerts.concerts'))
+    concert_date = form.concert_date.data
+    if not is_set(concert_date) and not is_set(to_edit):
+        flash('Concert_date cannot be empty!')
+        return redirect(url_for('concerts.concerts'))
+    tour = form.tour.data
 
     if not is_set(to_edit):
         try:

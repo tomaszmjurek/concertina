@@ -46,13 +46,19 @@ def musicians_search():
 def musicians_add():
     form = MusicianForm()
     name = form.name.data
-    if not is_set(name):
+    to_edit = form.to_edit.data
+    if not is_set(name) and not is_set(to_edit):
         flash('Name cannot be empty!')
         return redirect(url_for('musicians.musicians'))
     band = form.band.data
+    if not is_set(band) and not is_set(to_edit):
+        flash('Band cannot be empty!')
+        return redirect(url_for('musicians.musicians'))
     nationality = form.nationality.data
     instrument = form.instrument.data
-    to_edit = form.to_edit.data
+    if not is_set(instrument) and not is_set(to_edit):
+        flash('Instrument cannot be empty!')
+        return redirect(url_for('musicians.musicians'))
 
     if not is_set(to_edit):
         try:

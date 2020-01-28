@@ -50,12 +50,12 @@ def albums_search():
 def albums_add():
     form = AlbumForm()
     name = form.name.data
-    if not is_set(name):
+    to_edit = form.to_edit.data
+    if not is_set(name) and not is_set(to_edit):
         flash('Name cannot be empty!')
         return redirect(url_for('albums.albums'))
     band = form.band.data
     genre = form.genre.data
-    to_edit = form.to_edit.data
 
     if not is_set(to_edit):
         try:
@@ -66,7 +66,7 @@ def albums_add():
                 cursor.execute('UPDATE albums SET genre = %s::TEXT WHERE band = %s::TEXT'
                                'AND name = %s::TEXT', (genre, band, name))
         except psycopg2.IntegrityError as e:
-            flash('Such album already exists!')
+            flash('Such an album already exists!')
         except Exception as e:
             flash(Options.fields_not_set)
     else:

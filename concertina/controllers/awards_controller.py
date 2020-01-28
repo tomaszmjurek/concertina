@@ -38,10 +38,10 @@ def awards_search():
 def awards_add():
     form = AwardForm()
     name = form.name.data
-    if not is_set(name):
+    to_edit = form.to_edit.data
+    if not is_set(name) and not is_set(to_edit):
         flash('Name cannot be empty!')
         return redirect(url_for('awards.awards'))
-    to_edit = form.to_edit.data
 
     if not is_set(to_edit):
         try:
@@ -57,7 +57,7 @@ def awards_add():
             if is_set(name):
                 cursor.execute('UPDATE awardS SET name = %s::TEXT WHERE name= %s::TEXT', (name, to_edit))
         except psycopg2.IntegrityError as e:
-            flash('Such a award already exists!')
+            flash('Such an award already exists!')
         except Exception as e:
             flash('Modification was not possible!')
 

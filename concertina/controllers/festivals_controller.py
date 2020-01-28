@@ -25,7 +25,7 @@ def festivals(query=None):
     form.place.choices = BLANK_OPTION + sorted([(place['id_place'], f'{place["city"]} / {place["name"]}')
                                          for place in places], key=lambda x: x[1])
 
-    form.to_edit.choices = Options.EMPTY + sorted([(x['id_festival'], x['id_festival']) for x in incoming], key=lambda x: x[1])
+    form.to_edit.choices = Options.EMPTY + sorted([(x['id_festival'], x['festival_name']) for x in incoming], key=lambda x: x[1])
 
     return render_template('festivals.html', incoming=incoming, form=form, query_form=query_form)
 
@@ -43,12 +43,12 @@ def festivals_search():
 def festivals_add():
     form = FestivalForm()
     name = form.name.data
-    if not is_set(name):
+    to_edit = form.to_edit.data
+    if not is_set(name) and not is_set(to_edit):
         flash('Name cannot be empty!')
         return redirect(url_for('festivals.festivals'))
     id_place = form.place.data
     date_start = form.date_start.data
-    to_edit = form.to_edit.data
 
     if not is_set(to_edit):
         try:
