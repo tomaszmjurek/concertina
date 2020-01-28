@@ -80,6 +80,6 @@ def band_delete(name):
     try:
         cursor.execute("DELETE FROM bands WHERE name = %s::TEXT", [name])
         flash("Band deleted successfully!")
-    except:
-        flash("Can't delete this band because it's not empty!")
+    except Exception as e:
+        flash("Can't delete this band because it's not empty or is participating!")
     return redirect(url_for('bands.bands'))
