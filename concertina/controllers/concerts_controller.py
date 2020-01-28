@@ -38,7 +38,10 @@ def concerts(days=None, query=None):
     form.place.choices = Options.BLANK + sorted([(place['id_place'], f'{place["city"]} / {place["name"]}')
                           for place in places], key=lambda x: x[1])
 
-    form.to_edit.choices = Options.EMPTY + sorted([(x['id_concert'], x['id_concert']) for x in incoming], key=lambda x: x[1])
+    # form.to_edit.choices = Options.EMPTY + sorted([(x['id_concert'], x['id_concert']) for x in incoming], key=lambda x: x[1])
+    form.to_edit.choices = Options.EMPTY + sorted([(x['id_concert'],
+                                                    f'{x["concert_date"]} / {x["band"]} / {x["name"]} / {x["city"]}') for x in incoming],
+                                                  key=lambda x: x[1], reverse=True)
 
     return render_template('concerts.html', incoming=incoming, form=form, query_form=query_form)
 
