@@ -13,6 +13,8 @@ To run the app the following steps are necessary:
 * Use `flask run` to run the app
 
 ## How it looks
+<img src=https://github.com/tomaszmjurek/readme-images/blob/master/concertina.png>
+
 
 ## Built With
 * Python 3.7
